@@ -19,14 +19,14 @@ export default function Header () {
                                 Home
                             </NavLink>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <NavLink className='nav-link' to="/test">
-                                404
+                                Test 404
                             </NavLink>
-                        </li>
+                        </li> */}
                         <li className="nav-item">
                             <NavLink className='nav-link' target="_blank" to={import.meta.env.VITE_BACKOFFICE_URL}>
-                                Backoffice <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+                                Backoffice (Login) <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
                             </NavLink>
                         </li>
                     </ul>
