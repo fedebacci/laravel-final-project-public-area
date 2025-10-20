@@ -1,4 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header () {
     return (
@@ -24,7 +26,7 @@ export default function Header () {
                         </li>
                         <li className="nav-item">
                             <NavLink className='nav-link' target="_blank" to={import.meta.env.VITE_BACKOFFICE_URL}>
-                                Backoffice
+                                Backoffice <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
                             </NavLink>
                         </li>
                     </ul>
