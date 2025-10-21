@@ -4,7 +4,7 @@ import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header () {
     return (
-        <section id="main-header" className="sticky-top border-bottom shadow-sm">
+        <section id="main-header" className="sticky-top border-bottom shadow-sm bg-light">
             <div className="container">
                 <header className="d-flex flex-wrap justify-content-center py-3">
                     <Link className='navbar-brand d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none' to="/">

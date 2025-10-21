@@ -1,3 +1,5 @@
+import ResourcesList from "../components/resources/ResourcesList";
+
 export default function HomePage () {
     return (
         <section id="homepage-content">
@@ -5,6 +7,10 @@ export default function HomePage () {
                 <h2 className='text-center'>
                     HOMEPAGE - {import.meta.env.VITE_APP_NAME}
                 </h2>
+
+                <ResourcesList resourceType={'games'} />
+                <ResourcesList resourceType={'cards'} />
+                <ResourcesList resourceType={'decks'} />
             </div>
         </section>
     );
