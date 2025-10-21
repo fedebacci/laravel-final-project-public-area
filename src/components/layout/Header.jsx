@@ -1,13 +1,14 @@
 import { Link, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import pages from "../../assets/js/pages";
 
 export default function Header () {
     return (
         <section id="main-header" className="sticky-top border-bottom shadow-sm bg-light">
             <div className="container">
                 <header className="d-flex flex-wrap justify-content-center py-3">
-                    <Link className='navbar-brand d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none' to="/">
+                    <Link className='navbar-brand d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none' to={pages.HOME()}>
                         <img src="/vite.svg" alt={import.meta.env.VITE_APP_NAME + ' - Site logo'} />
                         <span className="fs-4" style={{color: '#EF3B2D'}}>
                             {import.meta.env.VITE_APP_NAME}
@@ -15,7 +16,7 @@ export default function Header () {
                     </Link>
                     <ul className="nav nav-pills">
                         <li className="nav-item">
-                            <NavLink className='nav-link' to="/">
+                            <NavLink className='nav-link' to={pages.HOME()}>
                                 Home
                             </NavLink>
                         </li>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import pages from "../assets/js/pages";
 
 
 export default function NotFoundPage () {
@@ -12,7 +12,7 @@ export default function NotFoundPage () {
                             Page not found
                         </h2>
                         <p className="text-center">
-                            <Link to="/">
+                            <Link to={pages.HOME()}>
                                 Back to homepage
                             </Link>
                         </p>
