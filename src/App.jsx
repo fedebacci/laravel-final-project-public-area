@@ -2,10 +2,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import DefaultLayout from "./layouts/DefaultLayout";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from './pages/NotFoundPage';
+import { LoaderProvider } from './contexts/LoaderContext';
 
 function App() {
   return (
     <>
+    <LoaderProvider>
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>
@@ -14,6 +16,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+    </LoaderProvider>
     </>
   )
 }
