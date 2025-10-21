@@ -21,6 +21,45 @@ export default function Header () {
                             </NavLink>
                         </li>
                         {/* <li className="nav-item">
+                            <NavLink className='nav-link' to={pages.GAMES()}>
+                                Games
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className='nav-link' to={pages.CARDS()}>
+                                Cards
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className='nav-link' to={pages.DECKS()}>
+                                Decks
+                            </NavLink>
+                        </li> */}
+
+
+                        <li className="nav-item dropdown">
+                            <a id="navbarDropdown" className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Resources
+                            </a>
+
+                            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <NavLink className="dropdown-item" to={pages.GAMES()}>
+                                    Games
+                                </NavLink>
+                                <NavLink className="dropdown-item" to={pages.CARDS()}>
+                                    Cards
+                                </NavLink>
+                                <NavLink className="dropdown-item" to={pages.DECKS()}>
+                                    Decks
+                                </NavLink>
+                            </div>
+                        </li>
+
+
+
+
+
+                        {/* <li className="nav-item">
                             <NavLink className='nav-link' to="/test">
                                 Test 404
                             </NavLink>
