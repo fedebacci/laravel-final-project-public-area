@@ -18,12 +18,16 @@ export default function ResourcesList ({ resourceType }) {
         axios
             .get(`${apiUrl}${type}`)
             .then(response => {
-                // console.info(response.data);
+                console.info(response.data);
                 // console.info(response.data.message);
-                setResources(response.data.resources);
+                // setResources(response.data.resources);
+                setResources(response.data.resources.data);
             })
             .catch(error => {
                 console.error(error);
+                console.error(error.message);
+                console.error(error.response);
+                console.error(error.response.data);
                 setResources([]);
             })
             .finally(() => {
@@ -42,18 +46,16 @@ export default function ResourcesList ({ resourceType }) {
                     {
                         resources.map(resource => {
                             return (
-                                <>
-                                    <div className="col-12 col-md-3 col-lg-2">
-                                        <ResourceCard resource={resource} key={resource.id}/>
-                                    </div>
-                                </>
+                                <div className="col-12 col-md-3 col-lg-2" key={resource.id}>
+                                    <ResourceCard resource={resource}/>
+                                </div>
                             );
                         })
                     }
                 </div>
                 :
                 <p className="alert alert-warning m-0">
-                    No {resourceType} has been found
+                    No {resourceType} have been found.
                 </p>
             }
         </section>
