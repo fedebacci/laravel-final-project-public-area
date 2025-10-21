@@ -8,7 +8,7 @@ export default function ResourcesShowPage ({ resourceType }) {
         <section id="ResourcesShowPage-content">
             <div className="container my-5">
                 <h2 className='text-center'>
-                    ResourcesShowPage - {resourceType}: #{id}
+                    ResourcesShowPage - {resourceType.slice(0, -1)}: #{id}
                 </h2>
             </div>
         </section>
