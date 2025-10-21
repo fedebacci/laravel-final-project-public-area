@@ -19,7 +19,8 @@ export default function ResourcesList ({ resourceType }) {
             .get(`${apiUrl}${type}`)
             .then(response => {
                 // console.info(response.data);
-                setResources(response.data);
+                // console.info(response.data.message);
+                setResources(response.data.resources);
             })
             .catch(error => {
                 console.error(error);
