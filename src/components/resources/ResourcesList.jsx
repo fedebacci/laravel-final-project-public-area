@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
+import ResourceCard from "./ResourceCard";
 
 export default function ResourcesList ({ resourceType }) {
 
@@ -22,6 +23,7 @@ export default function ResourcesList ({ resourceType }) {
             })
             .catch(error => {
                 console.error(error);
+                setResources([]);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -30,19 +32,28 @@ export default function ResourcesList ({ resourceType }) {
 
     return (
         <section className="py-3">
-            Resources List: {resourceType}
-            <br />
+            <h2>
+                {resourceType.toUpperCase()}
+            </h2>
             {
                 resources.length > 0 ?
-                resources.map(resource => {
-                    return (
-                        <>
-                            {resource.name} <br/>
-                        </>
-                    );
-                })
+                <div className="row g-3">
+                    {
+                        resources.map(resource => {
+                            return (
+                                <>
+                                    <div className="col-12 col-md-3">
+                                        <ResourceCard resource={resource} key={resource.id}/>
+                                    </div>
+                                </>
+                            );
+                        })
+                    }
+                </div>
                 :
-                'No resources'
+                <p className="alert alert-warning m-0">
+                    No {resourceType} has been found
+                </p>
             }
         </section>
     );
