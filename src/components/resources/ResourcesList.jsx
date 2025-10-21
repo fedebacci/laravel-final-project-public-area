@@ -42,7 +42,7 @@ export default function ResourcesList ({ resourceType }) {
                         resources.map(resource => {
                             return (
                                 <>
-                                    <div className="col-12 col-md-3">
+                                    <div className="col-12 col-md-3 col-lg-2">
                                         <ResourceCard resource={resource} key={resource.id}/>
                                     </div>
                                 </>
