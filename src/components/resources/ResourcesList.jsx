@@ -3,8 +3,22 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 import ResourceCard from "./ResourceCard";
+import { Link } from "react-router-dom";
+import pages from "../../assets/js/pages";
 
 export default function ResourcesList ({ resourceType }) {
+
+    let pageLink;
+    if (resourceType == 'games') {
+        pageLink = pages.GAMES();
+    } else if (resourceType == 'cards') {
+        pageLink = pages.CARDS();
+    } else if (resourceType == 'decks') {
+        pageLink = pages.DECKS();
+    } else {
+        pageLink = '#';
+    };
+
 
     const [resources, setResources] = useState([]);
     const { setIsLoading } = useLoader();
@@ -38,7 +52,9 @@ export default function ResourcesList ({ resourceType }) {
     return (
         <section className="py-3">
             <h2>
-                {resourceType.toUpperCase()}
+                <Link to={pageLink} className="text-decoration-none text-color-inherit">
+                    {resourceType.toUpperCase()}
+                </Link>
             </h2>
             {
                 resources.length > 0 ?
@@ -47,7 +63,7 @@ export default function ResourcesList ({ resourceType }) {
                         resources.map(resource => {
                             return (
                                 <div className="col-12 col-md-3 col-lg-2" key={resource.id}>
-                                    <ResourceCard resource={resource}/>
+                                    <ResourceCard resource={resource} resourceType={resourceType}/>
                                 </div>
                             );
                         })

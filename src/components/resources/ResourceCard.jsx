@@ -1,7 +1,37 @@
-export default function ResourceCard ({ resource }) {
+import { Link } from "react-router-dom";
+import pages from "../../assets/js/pages";
+
+export default function ResourceCard ({ resource, resourceType }) {
+    
+    let pageLink;
+    if (resourceType == 'games') {
+        pageLink = pages.SHOWGAME(resource.id);
+    } else if (resourceType == 'cards') {
+        pageLink = pages.SHOWCARD(resource.id);
+    } else if (resourceType == 'decks') {
+        pageLink = pages.SHOWDECK(resource.id);
+    } else {
+        pageLink = '#';
+    };
+    // todo: fix switch statement and use it instead of if-else
+    // switch (resourceType) {
+    //     case resourceType == 'games':
+    //         pageLink = pages.SHOWGAME(resource.id);
+    //         break;
+    //     case resourceType == 'cards':
+    //         pageLink = pages.SHOWCARD(resource.id);
+    //         break;
+    //     case resourceType == 'decks':
+    //         pageLink = pages.SHOWDECK(resource.id);
+    //         break;
+    //     default:
+    //         pageLink = '#';
+    //         break;
+    // }
 
     return (
-        <div className="card h-100">
+        // <Link to="#" className="card h-100 text-decoration-none">
+        <Link to={pageLink} className="card h-100 text-decoration-none">
 
             {
                 resource.logo
@@ -28,6 +58,6 @@ export default function ResourceCard ({ resource }) {
                     }
                 </p>
             </div>
-        </div>
+        </Link>
     );
 };

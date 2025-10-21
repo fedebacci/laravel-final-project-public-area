@@ -4,6 +4,6 @@ export default {
     SHOWGAME: (id) => `/games/${id}`,
     CARDS: () => '/cards',
     SHOWCARD: (id) => `/cards/${id}`,
-    DECK: () => '/decks',
+    DECKS: () => '/decks',
     SHOWDECK: (id) => `/decks/${id}`,
 };
