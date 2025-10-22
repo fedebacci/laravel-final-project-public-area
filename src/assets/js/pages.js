@@ -1,9 +1,9 @@
 export default {
     HOME: () => '/',
-    GAMES: () => '/games',
-    SHOWGAME: (id) => `/games/${id}`,
-    CARDS: () => '/cards',
-    SHOWCARD: (id) => `/cards/${id}`,
-    DECKS: () => '/decks',
-    SHOWDECK: (id) => `/decks/${id}`,
+    GAMES: () => '/resources/games',
+    SHOWGAME: (id) => `/resources/games/${id}`,
+    CARDS: () => '/resources/cards',
+    SHOWCARD: (id) => `/resources/cards/${id}`,
+    DECKS: () => '/resources/decks',
+    SHOWDECK: (id) => `/resources/decks/${id}`,
 };

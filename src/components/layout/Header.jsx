@@ -46,9 +46,9 @@ export default function Header () {
 
 
                             <li className="nav-item dropdown">
-                                <a id="navbarDropdown" className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        Resources
-                                </a>
+                                <NavLink id="navbarDropdown" className="nav-link dropdown-toggle" to="/resources" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Resources
+                                </NavLink>
 
                                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <NavLink className="dropdown-item" to={pages.GAMES()}>

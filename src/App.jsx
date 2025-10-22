@@ -16,17 +16,19 @@ function App() {
           <Route element={<DefaultLayout />}>
             <Route index element={<HomePage />} />
 
-            <Route path={pages.GAMES()}>
-              <Route index element={<ResourcesIndexPage resourceType="games" />} />
-              <Route path={pages.SHOWGAME(":id")} element={<ResourceShowPage resourceType="games" />} />
-            </Route>
-            <Route path={pages.CARDS()}>
-              <Route index element={<ResourcesIndexPage resourceType="cards" />} />
-              <Route path={pages.SHOWCARD(":id")} element={<ResourceShowPage resourceType="cards" />} />
-            </Route>
-            <Route path={pages.DECKS()}>
-              <Route index element={<ResourcesIndexPage resourceType="decks" />} />
-              <Route path={pages.SHOWDECK(":id")} element={<ResourceShowPage resourceType="decks" />} />
+            <Route path={'resources'}>
+              <Route path={pages.GAMES()}>
+                <Route index element={<ResourcesIndexPage resourceType="games" />} />
+                <Route path={pages.SHOWGAME(":id")} element={<ResourceShowPage resourceType="games" />} />
+              </Route>
+              <Route path={pages.CARDS()}>
+                <Route index element={<ResourcesIndexPage resourceType="cards" />} />
+                <Route path={pages.SHOWCARD(":id")} element={<ResourceShowPage resourceType="cards" />} />
+              </Route>
+              <Route path={pages.DECKS()}>
+                <Route index element={<ResourcesIndexPage resourceType="decks" />} />
+                <Route path={pages.SHOWDECK(":id")} element={<ResourceShowPage resourceType="decks" />} />
+              </Route>
             </Route>
 
             <Route path='*' element={<NotFoundPage />} />
