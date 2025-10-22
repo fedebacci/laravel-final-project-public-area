@@ -19,18 +19,20 @@ export default function ResourcesList ({ resourceType }) {
         pageLink = '#';
     };
 
+    const requestUrl = apiUrl + resourceType + '/' + (resourceType == 'cards' ? 'paginatedWithImages' : 'paginated');
+
 
     const [resources, setResources] = useState([]);
     const { setIsLoading } = useLoader();
 
     useEffect(() => {
-        fetchResource(resourceType);
+        fetchResource();
     }, []);
 
-    function fetchResource (type) {
+    function fetchResource () {
         setIsLoading(true);
         axios
-            .get(`${apiUrl}${type}`)
+            .get(`${requestUrl}`)
             .then(response => {
                 console.info(response.data);
                 // console.info(response.data.message);
@@ -38,10 +40,11 @@ export default function ResourcesList ({ resourceType }) {
                 setResources(response.data.resources.data);
             })
             .catch(error => {
+                // console.warn(`new error on request ${requestUrl}`);
                 console.error(error);
-                console.error(error.message);
-                console.error(error.response);
-                console.error(error.response.data);
+                // console.error(error.message);
+                // console.error(error.response);
+                // console.error(error.response.data);
                 setResources([]);
             })
             .finally(() => {
