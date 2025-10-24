@@ -4,6 +4,7 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 import ResourceCard from "../../components/resources/ResourceCard";
+import { useNavigate } from "react-router-dom";
 
 export default function ResourcesShowPage ({ resourceType }) {
     // # Comment for error of resource not defined when going from game to card (but doen't give it when going to deck)
@@ -11,6 +12,7 @@ export default function ResourcesShowPage ({ resourceType }) {
 
     const { id } = useParams();
     // console.log(id);
+    const navigate = useNavigate();
 
 
 
@@ -35,10 +37,9 @@ export default function ResourcesShowPage ({ resourceType }) {
         axios
             .get(`${requestUrl}`, payload)
             .then(response => {
-                // console.info(response.data);
+                console.info(response.data);
                 // console.info(response.data.message);
-                // response.data.resource.cards = response.data.cards;
-                console.info(response.data.resource);
+                // console.info(response.data.resource);
                 setResource(response.data.resource);
                 // setResource(response.data);
             })
@@ -59,6 +60,11 @@ export default function ResourcesShowPage ({ resourceType }) {
     return (
         <section id="ResourcesShowPage-content">
             <div className="container my-5">
+
+                <button className="btn btn-secondary" onClick={() => navigate(-1)}>
+                    Go back
+                </button>
+
                 {/* <h2 className='text-center'>
                     ResourcesShowPage - {resourceType.slice(0, -1)}: #{id}
                 </h2> */}
