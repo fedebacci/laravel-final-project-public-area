@@ -41,6 +41,12 @@ export default function ResourceCard ({ resource, resourceType }) {
                 &&
                 <img src={import.meta.env.VITE_BACKOFFICE_URL + '/storage/' + resource.logo} alt={resource.name} className="card-img-top" />
             }
+            {/* {
+                resource.game?.logo && resourceType != 'cards' ?
+                <img src={import.meta.env.VITE_BACKOFFICE_URL + '/storage/' + resource.game.logo} alt={resource.game.name} className="card-img-top" />
+                :
+                ''
+            } */}
             {
                 resource.image
                 &&
