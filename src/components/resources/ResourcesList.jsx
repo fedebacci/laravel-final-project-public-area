@@ -6,6 +6,9 @@ import ResourceCard from "./ResourceCard";
 import { Link } from "react-router-dom";
 import pages from "../../assets/js/pages";
 
+
+
+
 export default function ResourcesList ({ resourceType }) {
 
     let pageLink;
@@ -26,10 +29,10 @@ export default function ResourcesList ({ resourceType }) {
     const { setIsLoading } = useLoader();
 
     useEffect(() => {
-        fetchResource();
+        fetchResources();
     }, []);
 
-    function fetchResource () {
+    function fetchResources () {
         setIsLoading(true);
         axios
             .get(`${requestUrl}`)

@@ -27,3 +27,15 @@
 .text-color-inherit {
     color: inherit;
 }
+
+
+
+
+/* # MANAGING PRE TAG INSIDE DESCRIPTIONS */
+#ResourcesShowPage-content .description pre {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    
+    text-wrap: auto;
+}

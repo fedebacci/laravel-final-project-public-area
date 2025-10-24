@@ -1,15 +1,156 @@
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+const apiUrl = import.meta.env.VITE_API_URL;
+import { useLoader } from "../../contexts/LoaderContext";
+import ResourceCard from "../../components/resources/ResourceCard";
 
 export default function ResourcesShowPage ({ resourceType }) {
     const { id } = useParams();
     console.log(id);
 
+
+
+
+    const requestUrl = apiUrl + resourceType + '/' + id;
+
+    const [resource, setResource] = useState(null);
+    const { setIsLoading } = useLoader();
+
+    let payload = new FormData();
+    if (resourceType == 'games') {
+        // Add to request filter to get the right cards
+        payload.append('game_id', id);
+    }
+
+
+    useEffect(() => {
+        fetchResources();
+    }, [resourceType]);
+    function fetchResources () {
+        setIsLoading(true);
+        axios
+            .get(`${requestUrl}`, payload)
+            .then(response => {
+                console.info(response.data);
+                // console.info(response.data.message);
+                // response.data.resource.cards = response.data.cards;
+                console.info(response.data.resource);
+                setResource(response.data.resource);
+                // setResource(response.data);
+            })
+            .catch(error => {
+                // console.warn(`new error on request ${requestUrl}`);
+                console.error(error);
+                // console.error(error.message);
+                // console.error(error.response);
+                // console.error(error.response.data);
+                setResource(null);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }
+
+
     return (
         <section id="ResourcesShowPage-content">
             <div className="container my-5">
-                <h2 className='text-center'>
+                {/* <h2 className='text-center'>
                     ResourcesShowPage - {resourceType.slice(0, -1)}: #{id}
-                </h2>
+                </h2> */}
+                {
+                    resource != null ?
+                        <>
+                            <h2 className='text-center'>
+                                {resource.name}
+                            </h2>
+                            <p className="description">
+                                <pre>
+                                    {resource.description}
+                                </pre>
+                            </p>
+                            {
+                                resourceType == 'games' ?
+                                    <>
+                                        <h3>
+                                            Cards
+                                        </h3>
+                                        <div className="row g-3 mb-3">
+                                            {
+                                                resource.cards?.map(card => {
+                                                    return (
+                                                        <div className="col-12 col-md-3 col-lg-2" key={card.id}>
+                                                            <ResourceCard resource={card} resourceType={'cards'}/>
+                                                        </div>
+                                                    );
+                                                })
+                                            }
+                                        </div>
+                                        <h3>
+                                            Decks
+                                        </h3>
+                                        <div className="row g-3 mb-3">
+                                            {
+                                                resource.decks?.map(deck => {
+                                                    return (
+                                                        <div className="col-12 col-md-3 col-lg-2" key={deck.id}>
+                                                            <ResourceCard resource={deck} resourceType={'decks'}/>
+                                                        </div>
+                                                    );
+                                                })
+                                            }
+                                        </div>                                        
+                                    </>
+                                :
+                                    
+                                    resourceType == 'cards' ?
+                                        <>
+                                            <h3>
+                                                Decks that contain this card
+                                            </h3>
+                                            <div className="row g-3 mb-3">
+                                                {
+                                                    resource.decks?.map(deck => {
+                                                        return (
+                                                            <div className="col-12 col-md-3 col-lg-2" key={deck.id}>
+                                                                <ResourceCard resource={deck} resourceType={'decks'}/>
+                                                            </div>
+                                                        );
+                                                    })
+                                                }
+                                            </div>                                        
+                                        </>
+                                    :
+                                        <>
+                                            <h3>
+                                                Cards contained in this deck
+                                            </h3>
+                                            <div className="row g-3 mb-3">
+                                                {
+                                                    resource.cards?.map(card => {
+                                                        return (
+                                                            <div className="col-12 col-md-3 col-lg-2" key={card.id}>
+                                                                <ResourceCard resource={card} resourceType={'cards'}/>
+                                                            </div>
+                                                        );
+                                                    })
+                                                }
+                                            </div>                                        
+                                        </>         
+                                    
+                            }
+                        </>
+
+
+
+                    :
+                        <p className="alert alert-warning">
+                            Resource not found
+                        </p>
+                }
+
+
             </div>
         </section>
     );

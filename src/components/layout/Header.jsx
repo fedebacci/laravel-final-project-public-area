@@ -28,25 +28,8 @@ export default function Header () {
                                     Home
                                 </NavLink>
                             </li>
-                            {/* <li className="nav-item">
-                                <NavLink className='nav-link' to={pages.GAMES()}>
-                                    Games
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink className='nav-link' to={pages.CARDS()}>
-                                    Cards
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink className='nav-link' to={pages.DECKS()}>
-                                    Decks
-                                </NavLink>
-                            </li> */}
-
-
                             <li className="nav-item dropdown">
-                                <NavLink id="navbarDropdown" className="nav-link dropdown-toggle" to="/resources" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <NavLink id="navbarDropdown" className="nav-link dropdown-toggle" to="/resources" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Resources
                                 </NavLink>
 
@@ -62,16 +45,6 @@ export default function Header () {
                                     </NavLink>
                                 </div>
                             </li>
-
-
-
-
-
-                            {/* <li className="nav-item">
-                                <NavLink className='nav-link' to="/test">
-                                    Test 404
-                                </NavLink>
-                            </li> */}
                             <li className="nav-item">
                                 <NavLink className='nav-link' target="_blank" to={import.meta.env.VITE_BACKOFFICE_URL}>
                                     Backoffice (Login) <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
