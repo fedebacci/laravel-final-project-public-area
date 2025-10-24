@@ -65,11 +65,11 @@ export default function ResourcesShowPage ({ resourceType }) {
                             <h2 className='text-center'>
                                 {resource.name}
                             </h2>
-                            <p className="description">
+                            <div className="description mb-3">
                                 <pre>
                                     {resource.description}
                                 </pre>
-                            </p>
+                            </div>
                             {
                                 resourceType == 'games' ?
                                     <>
