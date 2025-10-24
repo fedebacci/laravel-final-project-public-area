@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import pages from "../../assets/js/pages";
 
 export default function ResourceCard ({ resource, resourceType }) {
+    // # Comment for error of resource not defined when going from game to card (but doen't give it when going to deck). See ResourceShowPage for more details about the part of the page that starts the chain that makes the error happen (even if the error happens here)
+    // console.debug('🟡 resourceType inside: ResourceCard', resourceType);
+    // console.debug('🟡 resource inside: ResourceCard', resource);
     
     let pageLink;
     if (resourceType == 'games') {

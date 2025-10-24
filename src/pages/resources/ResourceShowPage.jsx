@@ -6,8 +6,11 @@ import { useLoader } from "../../contexts/LoaderContext";
 import ResourceCard from "../../components/resources/ResourceCard";
 
 export default function ResourcesShowPage ({ resourceType }) {
+    // # Comment for error of resource not defined when going from game to card (but doen't give it when going to deck)
+    // console.debug('⚪ resourceType inside: ResourcesShowPage', resourceType);
+
     const { id } = useParams();
-    console.log(id);
+    // console.log(id);
 
 
 
@@ -32,7 +35,7 @@ export default function ResourcesShowPage ({ resourceType }) {
         axios
             .get(`${requestUrl}`, payload)
             .then(response => {
-                console.info(response.data);
+                // console.info(response.data);
                 // console.info(response.data.message);
                 // response.data.resource.cards = response.data.cards;
                 console.info(response.data.resource);
@@ -79,6 +82,10 @@ export default function ResourcesShowPage ({ resourceType }) {
                                         <div className="row g-3 mb-3">
                                             {
                                                 resource.cards?.map(card => {
+                                                    // # First test of solving error of resource not defined when going from game to card (but doen't give it when going to deck)
+                                                    // - test not working but not so important, leaving from now
+                                                    // todo: if there is time come back to solve this, if not leave this way 
+                                                    // card.game = resource;
                                                     return (
                                                         <div className="col-12 col-md-3 col-lg-2" key={card.id}>
                                                             <ResourceCard resource={card} resourceType={'cards'}/>
@@ -103,42 +110,55 @@ export default function ResourcesShowPage ({ resourceType }) {
                                         </div>                                        
                                     </>
                                 :
-                                    
-                                    resourceType == 'cards' ?
-                                        <>
-                                            <h3>
-                                                Decks that contain this card
-                                            </h3>
-                                            <div className="row g-3 mb-3">
-                                                {
-                                                    resource.decks?.map(deck => {
-                                                        return (
-                                                            <div className="col-12 col-md-3 col-lg-2" key={deck.id}>
-                                                                <ResourceCard resource={deck} resourceType={'decks'}/>
-                                                            </div>
-                                                        );
-                                                    })
-                                                }
-                                            </div>                                        
-                                        </>
-                                    :
-                                        <>
-                                            <h3>
-                                                Cards contained in this deck
-                                            </h3>
-                                            <div className="row g-3 mb-3">
-                                                {
-                                                    resource.cards?.map(card => {
-                                                        return (
-                                                            <div className="col-12 col-md-3 col-lg-2" key={card.id}>
-                                                                <ResourceCard resource={card} resourceType={'cards'}/>
-                                                            </div>
-                                                        );
-                                                    })
-                                                }
-                                            </div>                                        
-                                        </>         
-                                    
+                                    <>
+                                        {
+                                            resourceType == 'cards' ?
+                                                <>
+                                                    <h3>
+                                                        Decks that contain this card
+                                                    </h3>
+                                                    <div className="row g-3 mb-3">
+                                                        {
+                                                            resource.decks?.map(deck => {
+                                                                return (
+                                                                    <div className="col-12 col-md-3 col-lg-2" key={deck.id}>
+                                                                        <ResourceCard resource={deck} resourceType={'decks'}/>
+                                                                    </div>
+                                                                );
+                                                            })
+                                                        }
+                                                    </div>                                        
+                                                </>
+                                            :
+                                                <>
+                                                    <h3>
+                                                        Cards contained in this deck
+                                                    </h3>
+                                                    <div className="row g-3 mb-3">
+                                                        {
+                                                            resource.cards?.map(card => {
+                                                                return (
+                                                                    <div className="col-12 col-md-3 col-lg-2" key={card.id}>
+                                                                        <ResourceCard resource={card} resourceType={'cards'}/>
+                                                                    </div>
+                                                                );
+                                                            })
+                                                        }
+                                                    </div>                                        
+                                                </>   
+                                        }    
+
+
+                                        {/* # # If present gives error of resource not defined when going from game to card (but doen't give it when going to deck) */}
+                                        {/* <h3>
+                                            Game: 
+                                        </h3>  
+                                        <div className="row g-3">
+                                            <div className="col-12 col-md-3">
+                                                <ResourceCard resource={resource.game} resourceType={'games'}/>
+                                            </div>
+                                        </div> */}
+                                    </> 
                             }
                         </>
 
