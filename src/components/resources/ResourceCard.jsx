@@ -1,36 +1,16 @@
 import { Link } from "react-router-dom";
 import pages from "../../assets/js/pages";
+import { useResources } from "../../contexts/ResourcesContext";
 
 export default function ResourceCard ({ resource, resourceType }) {
     // # Comment for error of resource not defined when going from game to card (but doen't give it when going to deck). See ResourceShowPage for more details about the part of the page that starts the chain that makes the error happen (even if the error happens here)
     // console.debug('🟡 resourceType inside: ResourceCard', resourceType);
     // console.debug('🟡 resource inside: ResourceCard', resource);
     
-    let pageLink;
-    if (resourceType == 'games') {
-        pageLink = pages.SHOWGAME(resource.id);
-    } else if (resourceType == 'cards') {
-        pageLink = pages.SHOWCARD(resource.id);
-    } else if (resourceType == 'decks') {
-        pageLink = pages.SHOWDECK(resource.id);
-    } else {
-        pageLink = '#';
-    };
-    // todo: fix switch statement and use it instead of if-else
-    // switch (resourceType) {
-    //     case resourceType == 'games':
-    //         pageLink = pages.SHOWGAME(resource.id);
-    //         break;
-    //     case resourceType == 'cards':
-    //         pageLink = pages.SHOWCARD(resource.id);
-    //         break;
-    //     case resourceType == 'decks':
-    //         pageLink = pages.SHOWDECK(resource.id);
-    //         break;
-    //     default:
-    //         pageLink = '#';
-    //         break;
-    // }
+
+    const {setPageLink}  = useResources();
+    let pageLink = setPageLink(resourceType, resource.id);
+
 
     return (
         // <Link to="#" className="card h-100 text-decoration-none">

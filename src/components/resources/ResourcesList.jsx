@@ -4,23 +4,15 @@ const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 import ResourceCard from "./ResourceCard";
 import { Link } from "react-router-dom";
-import pages from "../../assets/js/pages";
+import { useResources } from "../../contexts/ResourcesContext";
 
 
 
 
 export default function ResourcesList ({ resourceType }) {
 
-    let pageLink;
-    if (resourceType == 'games') {
-        pageLink = pages.GAMES();
-    } else if (resourceType == 'cards') {
-        pageLink = pages.CARDS();
-    } else if (resourceType == 'decks') {
-        pageLink = pages.DECKS();
-    } else {
-        pageLink = '#';
-    };
+    const {setPageLink}  = useResources();
+    let pageLink = setPageLink(resourceType);
 
     const requestUrl = apiUrl + resourceType + '/' + (resourceType == 'cards' ? 'paginatedWithImages' : 'paginated');
 
