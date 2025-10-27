@@ -3,6 +3,7 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 import ResourceCard from "../../components/resources/ResourceCard";
+import ResourcesList from "../../components/resources/ResourcesList";
 
 export default function ResourcesIndexPage ({ resourceType }) {
     const requestUrl = apiUrl + resourceType;
@@ -44,25 +45,44 @@ export default function ResourcesIndexPage ({ resourceType }) {
                 <h2 className='text-center'>
                     {resourceType.toUpperCase()}
                 </h2>
+
+
+
                 {
                     resources.length > 0 ?
-                    
-                    <div className="row g-3">
-                        {
-                            resources.map(resource => {
-                                return (
-                                    <div className="col-12 col-md-3 col-lg-2" key={resource.id}>
-                                        <ResourceCard resource={resource} resourceType={resourceType}/>
-                                    </div>
-                                );
-                            })
-                        }
-                    </div>
+
+                    <>
+                        'NORMAL'
+                        <div className="row g-3">
+                            {
+                                resources.map(resource => {
+                                    return (
+                                        <div className="col-12 col-md-3 col-lg-2" key={resource.id}>
+                                            <ResourceCard resource={resource} resourceType={resourceType}/>
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
+                        {/* <hr />
+                        <div>
+                            <ResourcesList resourceType={'games'}/>
+                        </div> */}
+                        <hr />
+                        'CLONE'
+                        <div>
+                            <ResourcesList resourceType={resourceType}/>
+                        </div>
+                    </>
+
+
                     
                     :
                     <p className="alert alert-warning m-0">
                         No {resourceType} have been found.
                     </p>
+
+                    
                 }                
             </div>
         </section>

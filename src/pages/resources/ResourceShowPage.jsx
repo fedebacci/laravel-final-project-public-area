@@ -5,6 +5,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 import ResourceCard from "../../components/resources/ResourceCard";
 import { useNavigate } from "react-router-dom";
+import ResourcesList from "../../components/resources/ResourcesList";
 
 export default function ResourcesShowPage ({ resourceType }) {
     // # Comment for error of resource not defined when going from game to card (but doen't give it when going to deck)
@@ -22,11 +23,11 @@ export default function ResourcesShowPage ({ resourceType }) {
     const [resource, setResource] = useState(null);
     const { setIsLoading } = useLoader();
 
-    let payload = new FormData();
-    if (resourceType == 'games') {
-        // Add to request filter to get the right cards
-        payload.append('game_id', id);
-    }
+    // let payload = new FormData();
+    // if (resourceType == 'games') {
+    //     // Add to request filter to get the right cards
+    //     payload.append('game_id', id);
+    // }
 
 
     useEffect(() => {
@@ -35,7 +36,8 @@ export default function ResourcesShowPage ({ resourceType }) {
     function fetchResources () {
         setIsLoading(true);
         axios
-            .get(`${requestUrl}`, payload)
+            // .get(`${requestUrl}`, payload)
+            .get(`${requestUrl}`)
             .then(response => {
                 console.info(response.data);
                 // console.info(response.data.message);
@@ -166,8 +168,13 @@ export default function ResourcesShowPage ({ resourceType }) {
                                         </div> */}
                                     </> 
                             }
-                        </>
 
+                            
+                            <hr />
+                            <div>
+                                <ResourcesList resourceType={'games'}/>
+                            </div>
+                        </>
 
 
                     :
