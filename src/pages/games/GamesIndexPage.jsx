@@ -9,13 +9,20 @@ import pages from "../../assets/js/pages";
 export default function GamesIndexPage () {
     const requestUrl = apiUrl + 'games';
 
+    console.debug(`⚙️ LOADING GAMES INDEX .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... ..........`);
+
 
     const [games, setGames] = useState([]);
     const { setIsLoading } = useLoader();
     useEffect(() => {
-        fetchGames();
+        if (games.length == 0) {
+            fetchGames(requestUrl);
+        } else {
+            console.warn("TMP NON VUOTO A CARICAMENTO", requestUrl);
+            console.warn("TMP NON VUOTO A CARICAMENTO games", games);
+        }
     }, []);
-    function fetchGames () {
+    function fetchGames (requestUrl) {
         setIsLoading(true);
         axios
             .get(`${requestUrl}`)
@@ -51,39 +58,33 @@ export default function GamesIndexPage () {
 
 
                 {
-                    games.length > 0 ?
-
-                    <>
-                        <div className="row g-3">
-                            {
-                                games.map(game => {
-                                    return (
-                                        <div className="col-12 col-md-3 col-lg-2" key={game.id}>
-                                            <div className="card">
-                                                <div className="card-body">
-                                                    {game.name}
-                                                    <div className="mb-3">
-                                                        <Link to={pages.SHOWGAME(game.id)} className="text-decoration-none">
-                                                            Show
-                                                        </Link>
+                    games.length == 0 ?
+                        <p className="alert alert-warning m-0">
+                            No games have been found.
+                        </p>
+                    :
+                        <>
+                            <div className="row g-3">
+                                {
+                                    games.map(game => {
+                                        return (
+                                            <div className="col-12 col-md-3 col-lg-2" key={game.id}>
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        {game.name}
+                                                        <div className="mb-3">
+                                                            <Link to={pages.SHOWGAME(game.id)} className="text-decoration-none">
+                                                                Show
+                                                            </Link>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                })
-                            }
-                        </div>
-                    </>
-
-
-                    
-                    :
-                    <p className="alert alert-warning m-0">
-                        No games have been found.
-                    </p>
-
-                    
+                                        );
+                                    })
+                                }
+                            </div>
+                        </>                   
                 }                
             </div>
         </section>

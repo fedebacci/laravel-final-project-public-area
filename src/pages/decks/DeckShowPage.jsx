@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function DeckShowPage () {
     const { id } = useParams();
-    console.log(id);
+    // console.log(id);
+    console.debug(`⚙️ LOADING DECK SHOW ${id} .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... ..........`);
     const navigate = useNavigate();
 
 
@@ -21,9 +22,14 @@ export default function DeckShowPage () {
 
 
     useEffect(() => {
-        fetchDeck();
+        if (!deck) {
+            fetchDeck(requestUrl);
+        } else {
+            console.warn("TMP NON NULLO A CARICAMENTO", requestUrl);
+            console.warn("TMP NON NULLO A CARICAMENTO deck", deck);
+        }
     }, []);
-    function fetchDeck () {
+    function fetchDeck (requestUrl) {
         setIsLoading(true);
         axios
             // .get(`${requestUrl}`, payload)
@@ -60,23 +66,21 @@ export default function DeckShowPage () {
                     DeckShowPage - #{id}
                 </h2> */}
                 {
-                    deck != null ?
+                    deck == null ?
+                        <p className="alert alert-warning">
+                            Deck #{id} not found
+                        </p>
+                    :
                         <>
                             <h2 className='text-center'>
                                 {deck.name}
                             </h2>
                             <div className="description mb-3">
                                 <pre>
-                                    {deck.description}
+                                    {deck.description ?? 'No description'}
                                 </pre>
                             </div>
                         </>
-
-
-                    :
-                        <p className="alert alert-warning">
-                            Deck #{id} not found
-                        </p>
                 }
 
 

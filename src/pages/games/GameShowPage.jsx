@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function GameShowPage () {
     const { id } = useParams();
-    console.log(id);
+    // console.log(id);
+    console.debug(`⚙️ LOADING GAME SHOW ${id} .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... ..........`);
     const navigate = useNavigate();
 
 
@@ -26,9 +27,14 @@ export default function GameShowPage () {
 
 
     useEffect(() => {
-        fetchGame();
+        if (!game) {
+            fetchGame(requestUrl);
+        } else {
+            console.warn("TMP NON NULLO A CARICAMENTO", requestUrl);
+            console.warn("TMP NON NULLO A CARICAMENTO game", game);
+        }
     }, []);
-    function fetchGame () {
+    function fetchGame (requestUrl) {
         setIsLoading(true);
         axios
             // .get(`${requestUrl}`, payload)
@@ -65,23 +71,21 @@ export default function GameShowPage () {
                     GameShowPage - #{id}
                 </h2> */}
                 {
-                    game != null ?
+                    game == null ?
+                        <p className="alert alert-warning">
+                            Game #{id} not found
+                        </p>
+                    :
                         <>
                             <h2 className='text-center'>
                                 {game.name}
                             </h2>
                             <div className="description mb-3">
                                 <pre>
-                                    {game.description}
+                                    {game.description ?? 'No description'}
                                 </pre>
                             </div>
                         </>
-
-
-                    :
-                        <p className="alert alert-warning">
-                            Game #{id} not found
-                        </p>
                 }
 
 

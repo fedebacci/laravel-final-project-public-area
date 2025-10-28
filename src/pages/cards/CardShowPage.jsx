@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function CardShowPage () {
     const { id } = useParams();
-    console.log(id);
+    // console.log(id);
+    console.debug(`⚙️ LOADING CARD SHOW ${id} .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... ..........`);
     const navigate = useNavigate();
 
 
@@ -21,9 +22,14 @@ export default function CardShowPage () {
 
 
     useEffect(() => {
-        fetchCard();
+        if (!card) {
+            fetchCard(requestUrl);
+        } else {
+            console.warn("TMP NON NULLO A CARICAMENTO", requestUrl);
+            console.warn("TMP NON NULLO A CARICAMENTO card", card);
+        }
     }, []);
-    function fetchCard () {
+    function fetchCard (requestUrl) {
         setIsLoading(true);
         axios
             // .get(`${requestUrl}`, payload)
@@ -60,23 +66,21 @@ export default function CardShowPage () {
                     CardShowPage - #{id}
                 </h2> */}
                 {
-                    card != null ?
+                    card == null ?
+                        <p className="alert alert-warning">
+                            Card #{id} not found
+                        </p>
+                    :
                         <>
                             <h2 className='text-center'>
                                 {card.name}
                             </h2>
                             <div className="description mb-3">
                                 <pre>
-                                    {card.description}
+                                    {card.description ?? 'No description'}
                                 </pre>
                             </div>
                         </>
-
-
-                    :
-                        <p className="alert alert-warning">
-                            Card #{id} not found
-                        </p>
                 }
 
 

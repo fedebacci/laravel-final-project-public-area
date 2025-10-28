@@ -3,8 +3,7 @@
 // import { useResources } from "../contexts/ResourcesContext";
 
 export default function HomePage () {
-    console.debug('⚙️ LOADING HOME .............................................');
-    console.debug('⚙️ ..........................................................');
+    console.debug('⚙️ LOADING HOME .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... ..........');
     // const { homeGames, homeCards, homeDecks } = useResources();
     // console.debug('⚙️homeGames', homeGames);
     // console.debug('⚙️homeCards', homeCards);

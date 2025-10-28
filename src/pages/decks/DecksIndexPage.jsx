@@ -10,12 +10,19 @@ import pages from "../../assets/js/pages";
 export default function DecksIndexPage () {
     const requestUrl = apiUrl + 'decks';
 
+    console.debug(`⚙️ LOADING DECKS INDEX .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... ..........`);
+
     const [decks, setDecks] = useState([]);
     const { setIsLoading } = useLoader();
     useEffect(() => {
-        fetchDecks();
+        if (decks.length == 0) {
+            fetchDecks(requestUrl);
+        } else {
+            console.warn("TMP NON VUOTO A CARICAMENTO", requestUrl);
+            console.warn("TMP NON VUOTO A CARICAMENTO decks", decks);
+        }
     }, []);
-    function fetchDecks () {
+    function fetchDecks (requestUrl) {
         setIsLoading(true);
         axios
             .get(`${requestUrl}`)
@@ -51,37 +58,33 @@ export default function DecksIndexPage () {
 
 
                 {
-                    decks.length > 0 ?
-
-                    <>
-                        <div className="row g-3">
-                            {
-                                decks.map(deck => {
-                                    return (
-                                        <div className="col-12 col-md-3 col-lg-2" key={deck.id}>
-                                            <div className="card">
-                                                <div className="card-body">
-                                                    {deck.name}
-                                                    <div className="mb-3">
-                                                        <Link to={pages.SHOWDECK(deck.id)} className="text-decoration-none">
-                                                            Show
-                                                        </Link>
+                    decks.length == 0 ?
+                        <p className="alert alert-warning m-0">
+                            No decks have been found.
+                        </p>
+                    :
+                        <>
+                            <div className="row g-3">
+                                {
+                                    decks.map(deck => {
+                                        return (
+                                            <div className="col-12 col-md-3 col-lg-2" key={deck.id}>
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        {deck.name}
+                                                        <div className="mb-3">
+                                                            <Link to={pages.SHOWDECK(deck.id)} className="text-decoration-none">
+                                                                Show
+                                                            </Link>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                })
-                            }
-                        </div>
-                    </>
-
-
-                    
-                    :
-                    <p className="alert alert-warning m-0">
-                        No decks have been found.
-                    </p>
+                                        );
+                                    })
+                                }
+                            </div>
+                        </>
 
                     
                 }                

@@ -10,12 +10,19 @@ import pages from "../../assets/js/pages";
 export default function CardsIndexPage () {
     const requestUrl = apiUrl + 'cards';
 
+    console.debug(`⚙️ LOADING CARDS INDEX .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... ..........`);
+
     const [cards, setCards] = useState([]);
     const { setIsLoading } = useLoader();
     useEffect(() => {
-        fetchCards();
+        if (cards.length == 0) {
+            fetchCards(requestUrl);
+        } else {
+            console.warn("TMP NON VUOTO A CARICAMENTO", requestUrl);
+            console.warn("TMP NON VUOTO A CARICAMENTO cards", cards);
+        }
     }, []);
-    function fetchCards () {
+    function fetchCards (requestUrl) {
         setIsLoading(true);
         axios
             .get(`${requestUrl}`)
@@ -51,37 +58,33 @@ export default function CardsIndexPage () {
 
 
                 {
-                    cards.length > 0 ?
-
-                    <>
-                        <div className="row g-3">
-                            {
-                                cards.map(card => {
-                                    return (
-                                        <div className="col-12 col-md-3 col-lg-2" key={card.id}>
-                                            <div className="card">
-                                                <div className="card-body">
-                                                    {card.name}
-                                                    <div className="mb-3">
-                                                        <Link to={pages.SHOWCARD(card.id)} className="text-decoration-none">
-                                                            Show
-                                                        </Link>
+                    cards.length == 0 ?
+                        <p className="alert alert-warning m-0">
+                            No cards have been found.
+                        </p>
+                    :
+                        <>
+                            <div className="row g-3">
+                                {
+                                    cards.map(card => {
+                                        return (
+                                            <div className="col-12 col-md-3 col-lg-2" key={card.id}>
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        {card.name}
+                                                        <div className="mb-3">
+                                                            <Link to={pages.SHOWCARD(card.id)} className="text-decoration-none">
+                                                                Show
+                                                            </Link>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                })
-                            }
-                        </div>
-                    </>
-
-
-                    
-                    :
-                    <p className="alert alert-warning m-0">
-                        No cards have been found.
-                    </p>
+                                        );
+                                    })
+                                }
+                            </div>
+                        </>
 
                     
                 }                
