@@ -115,15 +115,15 @@ const ResourcesProvider = ({ children }) => {
 
 
 
-    useEffect(() => {
-        // fetchResources();
-        // const addition = resourceType == 'cards' ? 'paginatedWithImages' : 'paginated';
-        // console.log("addition", addition);      
-        // requestUrl = apiUrl + resourceType + '/' + addition;
-        fetchResources(apiUrl + 'games/paginated', true, 'games');
-        fetchResources(apiUrl + 'cards/paginatedWithImages', true, 'cards');
-        fetchResources(apiUrl + 'decks/paginated', true, 'decks');
-    }, []);
+    // useEffect(() => {
+    //     // fetchResources();
+    //     // const addition = resourceType == 'cards' ? 'paginatedWithImages' : 'paginated';
+    //     // console.log("addition", addition);      
+    //     // requestUrl = apiUrl + resourceType + '/' + addition;
+    //     fetchResources(apiUrl + 'games/paginated', true, 'games');
+    //     fetchResources(apiUrl + 'cards/paginatedWithImages', true, 'cards');
+    //     fetchResources(apiUrl + 'decks/paginated', true, 'decks');
+    // }, []);
 
 
     const resourcesData = {

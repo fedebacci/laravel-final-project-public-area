@@ -5,7 +5,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 import ResourceCard from "../../components/resources/ResourceCard";
 import { useNavigate } from "react-router-dom";
-import ResourcesList from "../../components/resources/ResourcesList";
+// import ResourcesList from "../../components/resources/ResourcesList";
 
 export default function ResourcesShowPage ({ resourceType }) {
     // # Comment for error of resource not defined when going from game to card (but doen't give it when going to deck)
@@ -171,9 +171,9 @@ export default function ResourcesShowPage ({ resourceType }) {
 
                             
                             <hr />
-                            <div>
+                            {/* <div>
                                 <ResourcesList resourceType={'games'}/>
-                            </div>
+                            </div> */}
                         </>
 
 

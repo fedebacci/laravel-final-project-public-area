@@ -69,10 +69,10 @@ export default function ResourcesIndexPage ({ resourceType }) {
                             <ResourcesList resourceType={'games'}/>
                         </div> */}
                         <hr />
-                        'CLONE'
+                        {/* 'CLONE'
                         <div>
                             <ResourcesList resourceType={resourceType}/>
-                        </div>
+                        </div> */}
                     </>
 
 

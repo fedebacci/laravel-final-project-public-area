@@ -1,14 +1,14 @@
 // import ResourcesList from "../components/resources/ResourcesList";
 
-import { useResources } from "../contexts/ResourcesContext";
+// import { useResources } from "../contexts/ResourcesContext";
 
 export default function HomePage () {
     console.debug('⚙️ LOADING HOME .............................................');
     console.debug('⚙️ ..........................................................');
-    const { homeGames, homeCards, homeDecks } = useResources();
-    console.debug('⚙️homeGames', homeGames);
-    console.debug('⚙️homeCards', homeCards);
-    console.debug('⚙️homeDecks', homeDecks);
+    // const { homeGames, homeCards, homeDecks } = useResources();
+    // console.debug('⚙️homeGames', homeGames);
+    // console.debug('⚙️homeCards', homeCards);
+    // console.debug('⚙️homeDecks', homeDecks);
 
     return (
         <section id="homepage-content">
