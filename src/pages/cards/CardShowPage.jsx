@@ -75,11 +75,18 @@ export default function CardShowPage () {
                             <h2 className='text-center'>
                                 {card.name}
                             </h2>
-                            <div className="description mb-3">
-                                <pre>
-                                    {card.description ?? 'No description'}
-                                </pre>
-                            </div>
+                            {
+                                card.description != null ?
+                                    <div className="description mb-3">
+                                        <pre>
+                                            {card.description}
+                                        </pre>
+                                    </div>                
+                                :
+                                    <p className="mb-3">
+                                        No description
+                                    </p>
+                            }
                         </>
                 }
 

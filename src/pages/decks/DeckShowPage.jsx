@@ -75,11 +75,18 @@ export default function DeckShowPage () {
                             <h2 className='text-center'>
                                 {deck.name}
                             </h2>
-                            <div className="description mb-3">
-                                <pre>
-                                    {deck.description ?? 'No description'}
-                                </pre>
-                            </div>
+                            {
+                                deck.description != null ?
+                                    <div className="description mb-3">
+                                        <pre>
+                                            {deck.description}
+                                        </pre>
+                                    </div>                
+                                :
+                                    <p className="mb-3">
+                                        No description
+                                    </p>
+                            }
                         </>
                 }
 

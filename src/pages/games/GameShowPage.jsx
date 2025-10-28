@@ -80,11 +80,20 @@ export default function GameShowPage () {
                             <h2 className='text-center'>
                                 {game.name}
                             </h2>
-                            <div className="description mb-3">
-                                <pre>
-                                    {game.description ?? 'No description'}
-                                </pre>
-                            </div>
+                            {
+                                game.description != null ?
+                                    <div className="description mb-3">
+                                        <pre>
+                                            {game.description}
+                                        </pre>
+                                    </div>                
+                                :
+                                    <p className="mb-3">
+                                        No description
+                                    </p>
+                            }
+
+                            
                         </>
                 }
 
