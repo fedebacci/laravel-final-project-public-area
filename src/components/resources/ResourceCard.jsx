@@ -7,26 +7,22 @@ export default function ResourceCard ({ resource, resourceType }) {
     // console.debug('🟡 resourceType inside: ResourceCard', resourceType);
     // console.debug('🟡 resource inside: ResourceCard', resource);
     
-
-    const {setPageLink}  = useResources();
-    let pageLink = setPageLink(resourceType, resource.id);
+    let pageLink;
+    if (resourceType == 'games') {
+        pageLink = pages.SHOWGAME(resource.id);
+    } else if (resourceType == 'cards') {
+        pageLink = pages.SHOWCARD(resource.id);
+    } else if (resourceType == 'decks') {
+        pageLink = pages.SHOWDECK(resource.id);
+    } else {
+        pageLink = '#';
+    };
 
 
     return (
         // <Link to="#" className="card h-100 text-decoration-none">
         <Link to={pageLink} className="card h-100 text-decoration-none">
 
-            {
-                resource.logo
-                &&
-                <img src={import.meta.env.VITE_BACKOFFICE_URL + '/storage/' + resource.logo} alt={resource.name} className="card-img-top" />
-            }
-            {/* {
-                resource.game?.logo && resourceType != 'cards' ?
-                <img src={import.meta.env.VITE_BACKOFFICE_URL + '/storage/' + resource.game.logo} alt={resource.game.name} className="card-img-top" />
-                :
-                ''
-            } */}
             {
                 resource.image
                 &&
@@ -41,12 +37,12 @@ export default function ResourceCard ({ resource, resourceType }) {
                     {
                         resource.description != null
                         ?
-                        resource.description.slice(0, 75) + (resource.description.length <= 75 ? '' : '...')
+                        resource.description.slice(0, 50) + (resource.description.length <= 50 ? '' : '...')
                         :
                         'No description available'
                     }
                 </p>
             </div>
-        </Link>
+        </Link>       
     );
 };

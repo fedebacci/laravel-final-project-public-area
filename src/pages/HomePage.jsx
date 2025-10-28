@@ -4,15 +4,21 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { Link } from "react-router-dom";
 import pages from "../assets/js/pages";
+import ResourceCard from "../components/resources/ResourceCard";
 
 const gamesFilters = {
     // id: 1,
     name: "pok",
 };
 const cardsFilters = {
-    name: "char",
-    description: "phase",
-    // image: true,
+    // name: "char",
+    // description: "phase",
+    image: true,
+    limit: 4,
+
+    // ! For now works more like limit (gives back right number of resources but does not give back pagination links)
+    // todo: differentiate from limit by managing pagination links both here and in private's area request filtering/response construction 
+    // paginate: 8,
 };
 const decksFilters = {
     name: "pok",
@@ -190,31 +196,37 @@ export default function HomePage () {
                                     games.map(game => {
                                         return (
                                             <div className="col-12 col-md-4 col-lg-3" key={game.id}>
-                                                <div className="card h-100">
-                                                    <div className="card-body">
-                                                        <h3>
-                                                            {game.name}
-                                                        </h3>
-                                                        {/* {game.name} */}
-                                                        <p>
-                                                            {
-                                                                game.description != null && game.description.length > 50 ?
-                                                                    game.description.slice(0,50) + '...'
-                                                                :
-                                                                    game.description != null ?
-                                                                        game.description
-                                                                    :
-                                                                        'No description'
-                                                            }
-                                                        </p>
-                                                        <div className="mb-3">
-                                                            <Link to={pages.SHOWGAME(game.id)} className="text-decoration-none">
-                                                                Show
-                                                            </Link>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <ResourceCard
+                                                    resource={game}
+                                                    resourceType={'games'}
+                                                />
                                             </div>
+                                            // <div className="col-12 col-md-4 col-lg-3" key={game.id}>
+                                            //     <div className="card h-100">
+                                            //         <div className="card-body">
+                                            //             <h3>
+                                            //                 {game.name}
+                                            //             </h3>
+                                            //             {/* {game.name} */}
+                                            //             <p>
+                                            //                 {
+                                            //                     game.description != null && game.description.length > 50 ?
+                                            //                         game.description.slice(0,50) + '...'
+                                            //                     :
+                                            //                         game.description != null ?
+                                            //                             game.description
+                                            //                         :
+                                            //                             'No description'
+                                            //                 }
+                                            //             </p>
+                                            //             <div className="mb-3">
+                                            //                 <Link to={pages.SHOWGAME(game.id)} className="text-decoration-none">
+                                            //                     Show
+                                            //                 </Link>
+                                            //             </div>
+                                            //         </div>
+                                            //     </div>
+                                            // </div>
                                         );
                                     })
                                 }
@@ -256,31 +268,37 @@ export default function HomePage () {
                                     cards.map(card => {
                                         return (
                                             <div className="col-12 col-md-4 col-lg-3" key={card.id}>
-                                                <div className="card h-100">
-                                                    <div className="card-body">
-                                                        <h3>
-                                                            {card.name}
-                                                        </h3>
-                                                        {/* {card.name} */}
-                                                        <p>
-                                                            {
-                                                                card.description != null && card.description.length > 50 ?
-                                                                    card.description.slice(0,50) + '...'
-                                                                :
-                                                                    card.description != null ?
-                                                                        card.description
-                                                                    :
-                                                                        'No description'
-                                                            }
-                                                        </p>
-                                                        <div className="mb-3">
-                                                            <Link to={pages.SHOWCARD(card.id)} className="text-decoration-none">
-                                                                Show
-                                                            </Link>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <ResourceCard
+                                                    resource={card}
+                                                    resourceType={'cards'}
+                                                />
+                                            </div>                                            
+                                            // <div className="col-12 col-md-4 col-lg-3" key={card.id}>
+                                            //     <div className="card h-100">
+                                            //         <div className="card-body">
+                                            //             <h3>
+                                            //                 {card.name}
+                                            //             </h3>
+                                            //             {/* {card.name} */}
+                                            //             <p>
+                                            //                 {
+                                            //                     card.description != null && card.description.length > 50 ?
+                                            //                         card.description.slice(0,50) + '...'
+                                            //                     :
+                                            //                         card.description != null ?
+                                            //                             card.description
+                                            //                         :
+                                            //                             'No description'
+                                            //                 }
+                                            //             </p>
+                                            //             <div className="mb-3">
+                                            //                 <Link to={pages.SHOWCARD(card.id)} className="text-decoration-none">
+                                            //                     Show
+                                            //                 </Link>
+                                            //             </div>
+                                            //         </div>
+                                            //     </div>
+                                            // </div>
                                         );
                                     })
                                 }
@@ -317,31 +335,37 @@ export default function HomePage () {
                                     decks.map(deck => {
                                         return (
                                             <div className="col-12 col-md-4 col-lg-3" key={deck.id}>
-                                                <div className="card h-100">
-                                                    <div className="card-body">
-                                                        <h3>
-                                                            {deck.name}
-                                                        </h3>
-                                                        {/* {deck.name} */}
-                                                        <p>
-                                                            {
-                                                                deck.description != null && deck.description.length > 50 ?
-                                                                    deck.description.slice(0,50) + '...'
-                                                                :
-                                                                    deck.description != null ?
-                                                                        deck.description
-                                                                    :
-                                                                        'No description'
-                                                            }
-                                                        </p>
-                                                        <div className="mb-3">
-                                                            <Link to={pages.SHOWDECK(deck.id)} className="text-decoration-none">
-                                                                Show
-                                                            </Link>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <ResourceCard
+                                                    resource={deck}
+                                                    resourceType={'decks'}
+                                                />
+                                            </div>                                            
+                                            // <div className="col-12 col-md-4 col-lg-3" key={deck.id}>
+                                            //     <div className="card h-100">
+                                            //         <div className="card-body">
+                                            //             <h3>
+                                            //                 {deck.name}
+                                            //             </h3>
+                                            //             {/* {deck.name} */}
+                                            //             <p>
+                                            //                 {
+                                            //                     deck.description != null && deck.description.length > 50 ?
+                                            //                         deck.description.slice(0,50) + '...'
+                                            //                     :
+                                            //                         deck.description != null ?
+                                            //                             deck.description
+                                            //                         :
+                                            //                             'No description'
+                                            //                 }
+                                            //             </p>
+                                            //             <div className="mb-3">
+                                            //                 <Link to={pages.SHOWDECK(deck.id)} className="text-decoration-none">
+                                            //                     Show
+                                            //                 </Link>
+                                            //             </div>
+                                            //         </div>
+                                            //     </div>
+                                            // </div>
                                         );
                                     })
                                 }

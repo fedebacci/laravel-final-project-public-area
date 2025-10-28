@@ -5,7 +5,7 @@ import { useLoader } from "../../contexts/LoaderContext";
 
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import pages from "../../assets/js/pages";
-
+import ResourceCard from "../../components/resources/ResourceCard";
 
 
 const formInitialData = {
@@ -182,31 +182,37 @@ export default function CardsIndexPage () {
                                     cards.map(card => {
                                         return (
                                             <div className="col-12 col-md-4 col-lg-3" key={card.id}>
-                                                <div className="card h-100">
-                                                    <div className="card-body">
-                                                        <h3>
-                                                            {card.name}
-                                                        </h3>
-                                                        {/* {card.name} */}
-                                                        <p>
-                                                            {
-                                                                card.description != null && card.description.length > 50 ? 
-                                                                    card.description.slice(0,50) + '...' 
-                                                                : 
-                                                                    card.description != null ?
-                                                                        card.description
-                                                                    :
-                                                                        'No description'
-                                                            }
-                                                        </p>
-                                                        <div className="mb-3">
-                                                            <Link to={pages.SHOWCARD(card.id)} className="text-decoration-none">
-                                                                Show
-                                                            </Link>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <ResourceCard
+                                                    resource={card}
+                                                    resourceType={'cards'}
+                                                />
+                                            </div>                                             
+                                            // <div className="col-12 col-md-4 col-lg-3" key={card.id}>
+                                            //     <div className="card h-100">
+                                            //         <div className="card-body">
+                                            //             <h3>
+                                            //                 {card.name}
+                                            //             </h3>
+                                            //             {/* {card.name} */}
+                                            //             <p>
+                                            //                 {
+                                            //                     card.description != null && card.description.length > 50 ? 
+                                            //                         card.description.slice(0,50) + '...' 
+                                            //                     : 
+                                            //                         card.description != null ?
+                                            //                             card.description
+                                            //                         :
+                                            //                             'No description'
+                                            //                 }
+                                            //             </p>
+                                            //             <div className="mb-3">
+                                            //                 <Link to={pages.SHOWCARD(card.id)} className="text-decoration-none">
+                                            //                     Show
+                                            //                 </Link>
+                                            //             </div>
+                                            //         </div>
+                                            //     </div>
+                                            // </div>
                                         );
                                     })
                                 }

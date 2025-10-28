@@ -6,6 +6,7 @@ import { useLoader } from "../../contexts/LoaderContext";
 import { Link } from "react-router-dom";
 import pages from "../../assets/js/pages";
 import { useNavigate, useLocation } from "react-router-dom";
+import ResourceCard from "../../components/resources/ResourceCard";
 
 
 const formInitialData = {
@@ -256,31 +257,37 @@ export default function GamesIndexPage () {
                                     games.map(game => {
                                         return (
                                             <div className="col-12 col-md-4 col-lg-3" key={game.id}>
-                                                <div className="card h-100">
-                                                    <div className="card-body">
-                                                        <h3>
-                                                            {game.name}
-                                                        </h3>                                                        
-                                                        {/* {game.name} */}
-                                                        <p>
-                                                            {
-                                                                game.description != null && game.description.length > 50 ? 
-                                                                    game.description.slice(0,50) + '...' 
-                                                                : 
-                                                                    game.description != null ?
-                                                                        game.description
-                                                                    :
-                                                                        'No description'
-                                                            }
-                                                        </p>                                                        
-                                                        <div className="mb-3">
-                                                            <Link to={pages.SHOWGAME(game.id)} className="text-decoration-none">
-                                                                Show
-                                                            </Link>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <ResourceCard
+                                                    resource={game}
+                                                    resourceType={'games'}
+                                                />
+                                            </div>                                             
+                                            // <div className="col-12 col-md-4 col-lg-3" key={game.id}>
+                                            //     <div className="card h-100">
+                                            //         <div className="card-body">
+                                            //             <h3>
+                                            //                 {game.name}
+                                            //             </h3>                                                        
+                                            //             {/* {game.name} */}
+                                            //             <p>
+                                            //                 {
+                                            //                     game.description != null && game.description.length > 50 ? 
+                                            //                         game.description.slice(0,50) + '...' 
+                                            //                     : 
+                                            //                         game.description != null ?
+                                            //                             game.description
+                                            //                         :
+                                            //                             'No description'
+                                            //                 }
+                                            //             </p>                                                        
+                                            //             <div className="mb-3">
+                                            //                 <Link to={pages.SHOWGAME(game.id)} className="text-decoration-none">
+                                            //                     Show
+                                            //                 </Link>
+                                            //             </div>
+                                            //         </div>
+                                            //     </div>
+                                            // </div>
                                         );
                                     })
                                 }

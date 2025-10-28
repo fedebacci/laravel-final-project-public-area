@@ -6,7 +6,7 @@ import { useLoader } from "../../contexts/LoaderContext";
 
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import pages from "../../assets/js/pages";
-
+import ResourceCard from "../../components/resources/ResourceCard";
 
 
 const formInitialData = {
@@ -191,31 +191,37 @@ export default function DecksIndexPage () {
                                     decks.map(deck => {
                                         return (
                                             <div className="col-12 col-md-4 col-lg-3" key={deck.id}>
-                                                <div className="card h-100">
-                                                    <div className="card-body">
-                                                        <h3>
-                                                            {deck.name}
-                                                        </h3>                                                        
-                                                        {/* {deck.name} */}
-                                                        <p>
-                                                            {
-                                                                deck.description != null && deck.description.length > 50 ? 
-                                                                    deck.description.slice(0,50) + '...' 
-                                                                : 
-                                                                    deck.description != null ?
-                                                                        deck.description
-                                                                    :
-                                                                        'No description'
-                                                            }
-                                                        </p>                                                        
-                                                        <div className="mb-3">
-                                                            <Link to={pages.SHOWDECK(deck.id)} className="text-decoration-none">
-                                                                Show
-                                                            </Link>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <ResourceCard
+                                                    resource={deck}
+                                                    resourceType={'decks'}
+                                                />
+                                            </div>                                             
+                                            // <div className="col-12 col-md-4 col-lg-3" key={deck.id}>
+                                            //     <div className="card h-100">
+                                            //         <div className="card-body">
+                                            //             <h3>
+                                            //                 {deck.name}
+                                            //             </h3>                                                        
+                                            //             {/* {deck.name} */}
+                                            //             <p>
+                                            //                 {
+                                            //                     deck.description != null && deck.description.length > 50 ? 
+                                            //                         deck.description.slice(0,50) + '...' 
+                                            //                     : 
+                                            //                         deck.description != null ?
+                                            //                             deck.description
+                                            //                         :
+                                            //                             'No description'
+                                            //                 }
+                                            //             </p>                                                        
+                                            //             <div className="mb-3">
+                                            //                 <Link to={pages.SHOWDECK(deck.id)} className="text-decoration-none">
+                                            //                     Show
+                                            //                 </Link>
+                                            //             </div>
+                                            //         </div>
+                                            //     </div>
+                                            // </div>
                                         );
                                     })
                                 }
