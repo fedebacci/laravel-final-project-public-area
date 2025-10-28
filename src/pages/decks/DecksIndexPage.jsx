@@ -4,6 +4,9 @@ const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 
 
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import pages from "../../assets/js/pages";
+
 
 
 const formInitialData = {
@@ -14,8 +17,6 @@ const formInitialData = {
 };
 
 
-import { Link } from "react-router-dom";
-import pages from "../../assets/js/pages";
 
 
 export default function DecksIndexPage () {
@@ -25,15 +26,68 @@ export default function DecksIndexPage () {
 
     const [decks, setDecks] = useState([]);
     const { setIsLoading } = useLoader();
+    const location = useLocation();
     useEffect(() => {
-        if (decks.length == 0) {
-            fetchDecks(requestUrl);
-        } else {
-            console.warn("TMP NON VUOTO A CARICAMENTO", requestUrl);
-            console.warn("TMP NON VUOTO A CARICAMENTO decks", decks);
-        }
+        fetchDecks(requestUrl);
     }, []);
-    function fetchDecks (requestUrl) {
+
+
+
+
+
+
+
+
+
+
+    const [ formData, setFormData ] =  useState({ ...formInitialData });
+    const navigate = useNavigate();
+    const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value});
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (formData.name == "") delete formData.name;
+        if (formData.description == "") delete formData.description;
+        const filters = new URLSearchParams(formData);
+
+        if (filters.size != 0) {
+            fetchDecks(requestUrl, formData);
+        } else {
+            fetchDecks(requestUrl);
+        }
+        navigate(pages.DECKS() + filters.size != 0 ? '?' + filters: '');
+    };    
+
+
+
+
+
+
+
+
+
+
+    function fetchDecks (requestUrl, filters = null) {
+
+        const urlFilters = new URLSearchParams(location.search);
+        if (filters) {
+            if (filters.name == "") delete filters.name;
+            if (filters.description == "") delete filters.description;
+
+            const filtersToAddToRequestFromFiltersObject = new URLSearchParams(filters);
+            requestUrl = requestUrl + '?' + filtersToAddToRequestFromFiltersObject;
+        } else if (formData.name == undefined && formData.description == undefined) {
+            setFormData({...formInitialData})
+        } else if (!filters && urlFilters.size > 0) {
+            requestUrl = requestUrl + '?' + urlFilters;
+        } 
+        
+        
+
+
         setIsLoading(true);
         axios
             .get(`${requestUrl}`)
@@ -41,7 +95,16 @@ export default function DecksIndexPage () {
                 console.info(response.data);
                 // console.info(response.data.message);
                 // console.info(response.data.data);
-                setDecks(response.data.data);
+                const TMPdecks = response.data.data.map((deck) => {
+                    return {
+                        id: deck.id,
+                        name: deck.name,
+                        description: deck.description,
+                    }
+                });
+                console.info('TMPdecks', TMPdecks);                
+                // setDecks(response.data.data);
+                setDecks(TMPdecks);
             })
             .catch(error => {
                 console.error(`new error on request ${requestUrl}`);
@@ -54,54 +117,7 @@ export default function DecksIndexPage () {
             .finally(() => {
                 setIsLoading(false);
             });
-    }
-
-
-
-
-
-    const [ formData, setFormData ] =  useState({ ...formInitialData });
-    const handleInputChange = (e) => {
-        // console.log(e.target.name);
-        // console.log(e.target.type);
-        // console.log(e.target.value);
-        // console.log("formInitialData", formInitialData);
-        // console.log("formData", formData);
-
-        // // formData[formData.indexOf(formData.find(field => field.name === e.target.name))].value = e.target.value;
-        // formData[e.target.name] = e.target.value;
-        // setFormData([
-        //     ...formData
-        // ]);
-        setFormData({ ...formData, [e.target.name]: e.target.value});
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // console.debug("FORM DATA FOR FILTERED REQUEST formData", formData);
-        
-        if (formData.name == "") delete formData.name;
-        if (formData.description == "") delete formData.description;
-        const filters = new URLSearchParams(formData);
-        // console.debug("formData", formData);
-        // console.debug("filters", filters);
-        // console.debug("filters.size", filters.size);
-        // console.debug("requestUrl + '?' + filters", requestUrl + '?' + filters);
-
-
-
-
-        if (filters.size != 0) {
-            // console.debug('🟦');
-            requestUrl = requestUrl + '?' + filters;
-        }
-        console.debug("⚠️ requestUrl", requestUrl);
-
-
-
-        fetchDecks(requestUrl);
-        // setFormData({ ...formInitialData });
-    };    
+    }    
     
 
 
@@ -113,11 +129,11 @@ export default function DecksIndexPage () {
                 </h2>
 
 
-                
+
                 <div className="card mb-3">
                     <div className="card-body">
-                    <form>
-                        <div className="mb-3">
+                    <form className="row g-3">
+                        <div className="col-12 col-md-6">
                             <label htmlFor="name" className="form-label">
                                 Filter by name
                             </label>
@@ -133,7 +149,7 @@ export default function DecksIndexPage () {
                         </div>
 
 
-                        <div className="mb-3">
+                        <div className="col-12 col-md-6">
                             <label htmlFor="description" className="form-label">
                                 Filter by description
                             </label>
@@ -144,7 +160,7 @@ export default function DecksIndexPage () {
 
                                 className="form-control" 
                                 id="description" 
-                                rows="5"
+                                rows="1"
                             >
                             </textarea>
                         </div>
@@ -175,9 +191,23 @@ export default function DecksIndexPage () {
                                     decks.map(deck => {
                                         return (
                                             <div className="col-12 col-md-4 col-lg-3" key={deck.id}>
-                                                <div className="card">
+                                                <div className="card h-100">
                                                     <div className="card-body">
-                                                        {deck.name}
+                                                        <h3>
+                                                            {deck.name}
+                                                        </h3>                                                        
+                                                        {/* {deck.name} */}
+                                                        <p>
+                                                            {
+                                                                deck.description != null && deck.description.length > 50 ? 
+                                                                    deck.description.slice(0,50) + '...' 
+                                                                : 
+                                                                    deck.description != null ?
+                                                                        deck.description
+                                                                    :
+                                                                        'No description'
+                                                            }
+                                                        </p>                                                        
                                                         <div className="mb-3">
                                                             <Link to={pages.SHOWDECK(deck.id)} className="text-decoration-none">
                                                                 Show

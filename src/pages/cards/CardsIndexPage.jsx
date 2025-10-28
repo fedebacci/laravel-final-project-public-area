@@ -3,8 +3,9 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import pages from "../../assets/js/pages";
+
 
 
 const formInitialData = {
@@ -22,15 +23,60 @@ export default function CardsIndexPage () {
 
     const [cards, setCards] = useState([]);
     const { setIsLoading } = useLoader();
+    const location = useLocation();
     useEffect(() => {
-        if (cards.length == 0) {
-            fetchCards(requestUrl);
-        } else {
-            console.warn("TMP NON VUOTO A CARICAMENTO", requestUrl);
-            console.warn("TMP NON VUOTO A CARICAMENTO cards", cards);
-        }
+        fetchCards(requestUrl);
     }, []);
-    function fetchCards (requestUrl) {
+    
+
+    
+
+
+
+
+
+    const [ formData, setFormData ] =  useState({ ...formInitialData });
+    const navigate = useNavigate();
+    const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value});
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (formData.name == "") delete formData.name;
+        if (formData.description == "") delete formData.description;
+        const filters = new URLSearchParams(formData);
+
+        if (filters.size != 0) {
+            fetchCards(requestUrl, formData);
+        } else {
+            fetchCards(requestUrl);
+        }
+        navigate(pages.CARDS() + filters.size != 0 ? '?' + filters: '');
+    };
+
+
+
+
+
+
+    function fetchCards (requestUrl, filters = null) {
+
+
+        const urlFilters = new URLSearchParams(location.search);
+        if (filters) {
+            if (filters.name == "") delete filters.name;
+            if (filters.description == "") delete filters.description;
+
+            const filtersToAddToRequestFromFiltersObject = new URLSearchParams(filters);
+            requestUrl = requestUrl + '?' + filtersToAddToRequestFromFiltersObject;
+        } else if (formData.name == undefined && formData.description == undefined) {
+            setFormData({...formInitialData})
+        } else if (!filters && urlFilters.size > 0) {
+            requestUrl = requestUrl + '?' + urlFilters;
+        }        
+
         setIsLoading(true);
         axios
             .get(`${requestUrl}`)
@@ -38,7 +84,17 @@ export default function CardsIndexPage () {
                 console.info(response.data);
                 // console.info(response.data.message);
                 // console.info(response.data.data);
-                setCards(response.data.data);
+                const TMPcards = response.data.data.map((card) => {
+                    return {
+                        id: card.id,
+                        image: card.image,
+                        name: card.name,
+                        description: card.description,
+                    }
+                });
+                console.info('TMPcards', TMPcards);
+                // setCards(response.data.data);
+                setCards(TMPcards);
             })
             .catch(error => {
                 console.error(`new error on request ${requestUrl}`);
@@ -52,58 +108,6 @@ export default function CardsIndexPage () {
                 setIsLoading(false);
             });
     }
-    
-
-
-
-
-
-    const [ formData, setFormData ] =  useState({ ...formInitialData });
-    const handleInputChange = (e) => {
-        // console.log(e.target.name);
-        // console.log(e.target.type);
-        // console.log(e.target.value);
-        // console.log("formInitialData", formInitialData);
-        // console.log("formData", formData);
-
-        // // formData[formData.indexOf(formData.find(field => field.name === e.target.name))].value = e.target.value;
-        // formData[e.target.name] = e.target.value;
-        // setFormData([
-        //     ...formData
-        // ]);
-        setFormData({ ...formData, [e.target.name]: e.target.value});
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // console.debug("FORM DATA FOR FILTERED REQUEST formData", formData);
-        
-        if (formData.name == "") delete formData.name;
-        if (formData.description == "") delete formData.description;
-        const filters = new URLSearchParams(formData);
-        // console.debug("formData", formData);
-        // console.debug("filters", filters);
-        // console.debug("filters.size", filters.size);
-        // console.debug("requestUrl + '?' + filters", requestUrl + '?' + filters);
-
-
-
-
-        if (filters.size != 0) {
-            // console.debug('🟦');
-            requestUrl = requestUrl + '?' + filters;
-        }
-        console.debug("⚠️ requestUrl", requestUrl);
-
-
-
-        fetchCards(requestUrl);
-        // setFormData({ ...formInitialData });
-    };
-
-
-
-
 
     
     
@@ -119,8 +123,8 @@ export default function CardsIndexPage () {
 
                 <div className="card mb-3">
                     <div className="card-body">
-                    <form>
-                        <div className="mb-3">
+                    <form className="row g-3">
+                        <div className="col-12 col-md-6">
                             <label htmlFor="name" className="form-label">
                                 Filter by name
                             </label>
@@ -136,7 +140,7 @@ export default function CardsIndexPage () {
                         </div>
 
 
-                        <div className="mb-3">
+                        <div className="col-12 col-md-6">
                             <label htmlFor="description" className="form-label">
                                 Filter by description
                             </label>
@@ -147,7 +151,7 @@ export default function CardsIndexPage () {
 
                                 className="form-control" 
                                 id="description" 
-                                rows="5"
+                                rows="1"
                             >
                             </textarea>
                         </div>
@@ -178,13 +182,22 @@ export default function CardsIndexPage () {
                                     cards.map(card => {
                                         return (
                                             <div className="col-12 col-md-4 col-lg-3" key={card.id}>
-                                                <div className="card">
+                                                <div className="card h-100">
                                                     <div className="card-body">
                                                         <h3>
                                                             {card.name}
                                                         </h3>
+                                                        {/* {card.name} */}
                                                         <p>
-                                                            {card.description ?? 'No description'}
+                                                            {
+                                                                card.description != null && card.description.length > 50 ? 
+                                                                    card.description.slice(0,50) + '...' 
+                                                                : 
+                                                                    card.description != null ?
+                                                                        card.description
+                                                                    :
+                                                                        'No description'
+                                                            }
                                                         </p>
                                                         <div className="mb-3">
                                                             <Link to={pages.SHOWCARD(card.id)} className="text-decoration-none">
