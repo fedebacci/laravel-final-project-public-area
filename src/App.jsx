@@ -4,15 +4,20 @@ import HomePage from "./pages/HomePage";
 import NotFoundPage from './pages/NotFoundPage';
 import { LoaderProvider } from './contexts/LoaderContext';
 import pages from './assets/js/pages';
-import { ResourcesProvider } from './contexts/ResourcesContext';
-import ResourcesIndexPage from './pages/resources/ResourcesIndexPage';
-import ResourceShowPage from './pages/resources/ResourceShowPage';
+
+// import { ResourcesProvider } from './contexts/ResourcesContext';
+import GamesIndexPage from './pages/games/GamesIndexPage';
+import GameShowPage from './pages/games/GameShowPage';
+import CardsIndexPage from './pages/cards/CardsIndexPage';
+import CardShowPage from './pages/cards/CardShowPage';
+import DecksIndexPage from './pages/decks/DecksIndexPage';
+import DeckShowPage from './pages/decks/DeckShowPage';
 
 function App() {
   return (
     <>
     <LoaderProvider>
-      <ResourcesProvider>
+      {/* <ResourcesProvider> */}
         <BrowserRouter>
           <Routes>
             <Route element={<DefaultLayout />}>
@@ -20,16 +25,16 @@ function App() {
 
               <Route path={'resources'}>
                 <Route path={pages.GAMES()}>
-                  <Route index element={<ResourcesIndexPage resourceType="games" />} />
-                  <Route path={pages.SHOWGAME(":id")} element={<ResourceShowPage resourceType="games" />} />
+                  <Route index element={<GamesIndexPage />} />
+                  <Route path={pages.SHOWGAME(":id")} element={<GameShowPage />} />
                 </Route>
                 <Route path={pages.CARDS()}>
-                  <Route index element={<ResourcesIndexPage resourceType="cards" />} />
-                  <Route path={pages.SHOWCARD(":id")} element={<ResourceShowPage resourceType="cards" />} />
+                  <Route index element={<CardsIndexPage />} />
+                  <Route path={pages.SHOWCARD(":id")} element={<CardShowPage />} />
                 </Route>
                 <Route path={pages.DECKS()}>
-                  <Route index element={<ResourcesIndexPage resourceType="decks" />} />
-                  <Route path={pages.SHOWDECK(":id")} element={<ResourceShowPage resourceType="decks" />} />
+                  <Route index element={<DecksIndexPage />} />
+                  <Route path={pages.SHOWDECK(":id")} element={<DeckShowPage />} />
                 </Route>
               </Route>
 
@@ -37,7 +42,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
-      </ResourcesProvider>
+      {/* </ResourcesProvider> */}
     </LoaderProvider>
     </>
   )

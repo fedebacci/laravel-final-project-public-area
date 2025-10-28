@@ -32,7 +32,9 @@
 
 
 /* # MANAGING PRE TAG INSIDE DESCRIPTIONS */
-#ResourcesShowPage-content .description pre {
+#GamesShowPage-content .description pre,
+#CardsShowPage-content .description pre,
+#DecksShowPage-content .description pre {
     font-family: inherit;
     font-size: inherit;
     color: inherit;
