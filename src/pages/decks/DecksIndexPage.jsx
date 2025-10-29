@@ -2,46 +2,52 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
-
-
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import pages from "../../assets/js/pages";
 import ResourceCard from "../../components/resources/ResourceCard";
+
+
+
 
 
 const formInitialData = {
     name: "",
     description: "",
-    // max_price: null,
-    // min_price: null,
+    min_price: "",
+    max_price: "",
 };
+const isDebug = false;
+
 
 
 
 
 export default function DecksIndexPage () {
+    if (isDebug) console.debug(`⚙️ LOADING DECKS INDEX .......... .......... .......... .......... .......... .......... ..........`);
+    
     let requestUrl = apiUrl + 'decks';
-
-    console.debug(`⚙️ LOADING DECKS INDEX .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... ..........`);
-
+    if (isDebug) console.debug(`⚙️ DECKS INDEX requestUrl`, requestUrl);
+    
     const [decks, setDecks] = useState([]);
+    if (isDebug) console.debug(`⚙️ DECKS INDEX decks`, decks);
     const { setIsLoading } = useLoader();
-    const location = useLocation();
+
+
+
+
+
     useEffect(() => {
+        if (isDebug) console.info(`🔂 DECKS INDEX useEffect`);
+        if (isDebug) console.debug(`🔂 DECKS INDEX useEffect requestUrl`, requestUrl);
+        if (isDebug) console.debug(`🔂 DECKS INDEX useEffect formData`, formData);        
         fetchDecks(requestUrl);
     }, []);
 
-
-
-
-
-
-
-
-
-
+   
+   
+   
+   
     const [ formData, setFormData ] =  useState({ ...formInitialData });
-    const navigate = useNavigate();
+    if (isDebug) console.debug(`⚙️ DECKS INDEX formData`, formData);
+
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value});
     };
@@ -49,16 +55,19 @@ export default function DecksIndexPage () {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (formData.name == "") delete formData.name;
-        if (formData.description == "") delete formData.description;
-        const filters = new URLSearchParams(formData);
+        if (isDebug) console.clear();
+        if (isDebug) console.info("⚠️ DECKS INDEX handleSubmit");
+        if (isDebug) console.debug("⚠️ DECKS INDEX handleSubmit formData: ", formData);        
+        
+        if (formData) {
+            if (isDebug) console.warn("⚠️ DECKS INDEX handleSubmit formData EXISTS");
+            if (isDebug) console.debug("⚠️ DECKS INDEX handleSubmit formData: ", formData); 
 
-        if (filters.size != 0) {
             fetchDecks(requestUrl, formData);
         } else {
-            fetchDecks(requestUrl);
+            if (isDebug) console.error("⚠️ DECKS INDEX handleSubmit formData DOES NOT EXIST");
+            fetchDecks(requestUrl, null);
         }
-        navigate(pages.DECKS() + filters.size != 0 ? '?' + filters: '');
     };    
 
 
@@ -71,54 +80,61 @@ export default function DecksIndexPage () {
 
 
     function fetchDecks (requestUrl, filters = null) {
+        if (isDebug) console.info("⬜ DECKS INDEX fetchDecks");
+        if (isDebug) console.debug("⬜ DECKS INDEX fetchDecks formData: ", formData);
+        if (isDebug) console.debug("⬜ DECKS INDEX fetchDecks requestUrl: ", requestUrl);
+        if (isDebug) console.debug("⬜ DECKS INDEX fetchDecks filters: ", filters);        
 
-        const urlFilters = new URLSearchParams(location.search);
-        if (filters) {
-            if (filters.name == "") delete filters.name;
-            if (filters.description == "") delete filters.description;
+        if (filters?.name == "") delete filters.name;
+        if (filters?.description == "") delete filters.description;
+        if (filters?.min_price == "") delete filters.min_price;
+        if (filters?.max_price == "") delete filters.max_price;         
+        if (filters != null && Object.keys(filters).length > 0) {
+            if (isDebug) console.debug("⬜ DECKS INDEX fetchDecks filters != null && Object.keys(filters).length > 0");
 
-            const filtersToAddToRequestFromFiltersObject = new URLSearchParams(filters);
-            requestUrl = requestUrl + '?' + filtersToAddToRequestFromFiltersObject;
-        } else if (formData.name == undefined && formData.description == undefined) {
-            setFormData({...formInitialData})
-        } else if (!filters && urlFilters.size > 0) {
-            requestUrl = requestUrl + '?' + urlFilters;
-        } 
+            const requestFilters = new URLSearchParams(filters);
+            requestUrl = requestUrl + '?' + requestFilters;          
+        } else {
+            if (isDebug) console.debug("⬜ DECKS INDEX fetchDecks filters == null || Object.keys(filters) <= 0");
+        }
         
         
 
-
+        if (isDebug) console.debug("⬜⬜ DECKS INDEX fetchDecks requestUrl: ", requestUrl);
         setIsLoading(true);
         axios
             .get(`${requestUrl}`)
             .then(response => {
-                console.info(response.data);
-                // console.info(response.data.message);
-                // console.info(response.data.data);
+                if (isDebug) console.info("🟨 DECKS INDEX fetchDecks response");
+                if (isDebug) console.debug("🟨 DECKS INDEX fetchDecks response response.data: ", response.data);
+                if (isDebug) console.debug("🟨 DECKS INDEX fetchDecks response formData: ", formData);
                 const TMPdecks = response.data.data.map((deck) => {
                     return {
                         id: deck.id,
                         name: deck.name,
                         description: deck.description,
+                        price: deck.price,
                     }
                 });
-                console.info('TMPdecks', TMPdecks);                
-                // setDecks(response.data.data);
+                if (isDebug) console.debug('🟨 DECKS fetchDecks response TMPdecks', TMPdecks);
                 setDecks(TMPdecks);
             })
             .catch(error => {
-                console.error(`new error on request ${requestUrl}`);
-                console.error(error);
-                // console.error(error.message);
-                // console.error(error.response);
-                // console.error(error.response.data);
+                if (isDebug) console.error("❌ DECKS INDEX error", error);
                 setDecks([]);
             })
             .finally(() => {
                 setIsLoading(false);
             });
-    }    
-    
+    }
+
+
+
+
+
+
+
+
 
 
     return (
@@ -132,49 +148,80 @@ export default function DecksIndexPage () {
 
                 <div className="card mb-3">
                     <div className="card-body">
-                    <form className="row g-3">
-                        <div className="col-12 col-md-6">
-                            <label htmlFor="name" className="form-label">
-                                Filter by name
-                            </label>
-                            <input 
-                                value={formData.name}
-                                onChange={handleInputChange}
-                                name="name"
+                        <form className="row g-3">
+                            <div className="col-12 col-md-6">
+                                <label htmlFor="name" className="form-label">
+                                    Filter by name
+                                </label>
+                                <input 
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    name="name"
 
-                                type="text" 
-                                className="form-control" 
-                                id="name" 
-                            />
-                        </div>
+                                    type="text" 
+                                    className="form-control" 
+                                    id="name" 
+                                />
+                            </div>
 
 
-                        <div className="col-12 col-md-6">
-                            <label htmlFor="description" className="form-label">
-                                Filter by description
-                            </label>
-                            <textarea 
-                                value={formData.description}
-                                onChange={handleInputChange}
-                                name="description"
+                            <div className="col-12 col-md-6">
+                                <label htmlFor="description" className="form-label">
+                                    Filter by description
+                                </label>
+                                <textarea 
+                                    value={formData.description}
+                                    onChange={handleInputChange}
+                                    name="description"
 
-                                className="form-control" 
-                                id="description" 
-                                rows="1"
+                                    className="form-control" 
+                                    id="description" 
+                                    rows="1"
+                                >
+                                </textarea>
+                            </div>
+
+
+                            <div className="col-12 col-md-6">
+                                <label htmlFor=" " className="form-label">
+                                    Filter by min_price
+                                </label>
+                                <input 
+                                    value={formData.min_price}
+                                    onChange={handleInputChange}
+                                    name="min_price"
+
+                                    type="number" 
+                                    className="form-control" 
+                                    id="min_price" 
+                                />
+                            </div>
+                            <div className="col-12 col-md-6">
+                                <label htmlFor=" " className="form-label">
+                                    Filter by max_price
+                                </label>
+                                <input 
+                                    value={formData.max_price}
+                                    onChange={handleInputChange}
+                                    name="max_price"
+
+                                    type="number" 
+                                    className="form-control" 
+                                    id="max_price" 
+                                />
+                            </div>
+
+
+
+                            <button 
+                                onClick={handleSubmit}
+
+                                type="submit" 
+                                className="btn btn-primary"
                             >
-                            </textarea>
-                        </div>
-
-
-                        <button 
-                            onClick={handleSubmit}
-
-                            type="submit" 
-                            className="btn btn-primary"
-                        >
-                            Submit
-                        </button>
-                    </form>
+                                Submit
+                            </button>
+                        </form>
                     </div>
                 </div>
 

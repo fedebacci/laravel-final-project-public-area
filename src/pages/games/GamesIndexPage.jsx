@@ -2,113 +2,72 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
-
-import { Link } from "react-router-dom";
-import pages from "../../assets/js/pages";
-import { useNavigate, useLocation } from "react-router-dom";
 import ResourceCard from "../../components/resources/ResourceCard";
+
+
+
 
 
 const formInitialData = {
     name: "",
     description: "",
-    // max_price: null,
-    // min_price: null,
+    min_price: "",
+    max_price: "",
 };
+const isDebug = false;
+
+
+
 
 
 export default function GamesIndexPage () {
-    let requestUrl = apiUrl + 'games';
-
-    console.debug(`⚙️ LOADING GAMES INDEX .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... ..........`);
+    if (isDebug) console.info(`⚙️ LOADING GAMES INDEX .......... .......... .......... .......... .......... .......... ..........`);
     
+    let requestUrl = apiUrl + 'games';
+    if (isDebug) console.debug(`⚙️ GAMES INDEX requestUrl`, requestUrl);
     
     const [games, setGames] = useState([]);
-    // console.debug(`⚙️ games`, games);
+    if (isDebug) console.debug(`⚙️ GAMES INDEX games`, games);
     const { setIsLoading } = useLoader();
-    
-    const location = useLocation();
-    // const urlFiltersInPageLoading = new URLSearchParams(location.search);
-    // console.debug(`⚙️ requestUrl`, requestUrl);
-    // // console.debug(`⚙️ formData`, formData);
-    // console.debug(`⚙️ urlFiltersInPageLoading`, urlFiltersInPageLoading); 
+
+
+
+
 
     useEffect(() => {
-        // console.warn("🔂 STO RICARICANDO CON USEEFFECT requestUrl", requestUrl);
-        // console.warn("🔂 STO RICARICANDO CON USEEFFECT games", games);
-        // // if (games.length == 0) {
-        // //     console.warn("🔂 TMP SI VUOTO A CARICAMENTO requestUrl", requestUrl);
-        // //     console.warn("🔂 TMP SI VUOTO A CARICAMENTO games", games);
-        // //     fetchGames(requestUrl);
-        // // } else {
-        // //     console.warn("🔂 TMP NON VUOTO A CARICAMENTO requestUrl", requestUrl);
-        // //     console.warn("🔂 TMP NON VUOTO A CARICAMENTO games", games);
-        // // }
+        if (isDebug) console.info(`🔂 GAMES INDEX useEffect`);
+        if (isDebug) console.debug(`🔂 GAMES INDEX useEffect requestUrl`, requestUrl);
+        if (isDebug) console.debug(`🔂 GAMES INDEX useEffect formData`, formData);
         fetchGames(requestUrl);
-
-        // // console.debug(`🔂 STO RICARICANDO CON USEEFFECT location`, location);
-        // const urlFiltersInUseEffect = new URLSearchParams(location.search);
-        // console.warn(`🔂 STO RICARICANDO CON USEEFFECT requestUrl`, requestUrl);
-        // console.warn(`🔂 STO RICARICANDO CON USEEFFECT urlFiltersInUseEffect`, urlFiltersInUseEffect); 
-        // console.warn(`🔂 STO RICARICANDO CON USEEFFECT urlFiltersInUseEffect.size`, urlFiltersInUseEffect.size); 
     }, []);
-
     
-
-
+    
+    
+    
+    
     const [ formData, setFormData ] =  useState({ ...formInitialData });
-    // console.debug(`⚙️ formData`, formData);
-    const navigate = useNavigate();
+    if (isDebug) console.debug(`⚙️ GAMES INDEX formData`, formData);
+
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value});
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.debug("FORM DATA FOR FILTERED REQUEST formData", formData);
         
-        if (formData.name == "") delete formData.name;
-        if (formData.description == "") delete formData.description;
-        const filters = new URLSearchParams(formData);
-        // console.debug("⚠️ requestUrl", requestUrl);
-        // console.debug("⚠️ formData", formData);
-        // console.debug("⚠️ filters", filters);
-        // console.debug("⚠️ filters.entries", filters.entries);
-        // console.debug("⚠️ filters.name", filters.name);
-        // console.debug("⚠️ filters.description", filters.description);
-        // console.debug("⚠️ filters.size", filters.size);
-        // // console.debug("⚠️ requestUrl + '?' + filters", requestUrl + '?' + filters);
+        if (isDebug) console.clear();
+        if (isDebug) console.info("⚠️ GAMES INDEX handleSubmit");
+        if (isDebug) console.debug("⚠️ GAMES INDEX handleSubmit formData: ", formData);        
+        
+        if (formData) {
+            if (isDebug) console.warn("⚠️ GAMES INDEX handleSubmit formData EXISTS");
+            if (isDebug) console.debug("⚠️ GAMES INDEX handleSubmit formData: ", formData); 
 
-        // const urlFiltersInHandleSubmit = new URLSearchParams(location.search);
-        // // console.debug(`⚠️ urlFiltersInHandleSubmit`, urlFiltersInHandleSubmit);
-
-
-
-        // if (filters.size != 0) {
-        //     // console.debug('🟦');
-        //     requestUrl = requestUrl + '?' + filters;
-        //     console.debug("⚠️ requestUrl MODIFICATA", requestUrl);
-        // }
-
-
-
-        // - Fetch new filtered resources
-        // - Works but sharing not possible (does not navigate)
-        // fetchGames(requestUrl);
-        // - Fetch new filtered resources
-        // navigate to new URL with updated parameters
-        // navigate(pages.GAMES());
-
-        if (filters.size != 0) {
-            // console.debug('⚠️ ');
-            // fetchGames(requestUrl, filters);
             fetchGames(requestUrl, formData);
         } else {
-            fetchGames(requestUrl);
+            if (isDebug) console.error("⚠️ GAMES INDEX handleSubmit formData DOES NOT EXIST");
+            fetchGames(requestUrl, null);
         }
-        navigate(pages.GAMES() + filters.size != 0 ? '?' + filters: '');
-
-        // setFormData({ ...formInitialData });
     };    
     
 
@@ -118,70 +77,56 @@ export default function GamesIndexPage () {
 
 
     function fetchGames (requestUrl, filters = null) {
-        setIsLoading(true);
+        if (isDebug) console.info("⬜ GAMES INDEX fetchGames");
+        if (isDebug) console.debug("⬜ GAMES INDEX fetchGames formData: ", formData);
+        if (isDebug) console.debug("⬜ GAMES INDEX fetchGames requestUrl: ", requestUrl);
+        if (isDebug) console.debug("⬜ GAMES INDEX fetchGames filters: ", filters);
 
-        // // console.debug(`➡️ requestUrl`, requestUrl);
-        // console.debug(`➡️ formData`, formData);
-        // console.debug(`➡️ filters`, filters);
+        if (filters?.name == "") delete filters.name;
+        if (filters?.description == "") delete filters.description;
+        if (filters?.min_price == "") delete filters.min_price;
+        if (filters?.max_price == "") delete filters.max_price;         
+        if (filters != null && Object.keys(filters).length > 0) {
+            if (isDebug) console.debug("⬜ GAMES INDEX fetchGames filters != null && Object.keys(filters).length > 0");
 
-
-        const urlFilters = new URLSearchParams(location.search);
-        // console.debug(`➡️ urlFilters`, urlFilters);
-        // // console.debug(`➡️ filters`, filters);
-        
-        if (filters) {
-            if (filters.name == "") delete filters.name;
-            if (filters.description == "") delete filters.description;
-
-            const filtersToAddToRequestFromFiltersObject = new URLSearchParams(filters);
-            // console.debug(`➡️ filtersToAddToRequestFromFiltersObject`, filtersToAddToRequestFromFiltersObject);
-            // requestUrl = requestUrl + '?' + filters;
-            requestUrl = requestUrl + '?' + filtersToAddToRequestFromFiltersObject;
-            // console.debug(`➡️ ⚪⚪⚪⚪`);
-        } else if (formData.name == undefined && formData.description == undefined) {
-            // console.debug(`➡️ 🟡🟡🟡🟡`);
-            setFormData({...formInitialData})
-        } else if (!filters && urlFilters.size > 0) {
-            // console.debug(`➡️ 🔵🔵🔵🔵`);
-            // console.debug(`➡️ urlFilters`, urlFilters);
-            // console.debug(`➡️ filters`, filters);
-            // console.debug(`➡️ requestUrl`, requestUrl);
-            // console.debug(`➡️ formData`, formData);
-            requestUrl = requestUrl + '?' + urlFilters;
+            const requestFilters = new URLSearchParams(filters);
+            requestUrl = requestUrl + '?' + requestFilters;          
+        } else {
+            if (isDebug) console.debug("⬜ GAMES INDEX fetchGames filters == null || Object.keys(filters) <= 0");
         }
-        
-        
-        // console.debug(`➡️ requestUrl`, requestUrl);
+
+
+
+        if (isDebug) console.debug("⬜⬜ GAMES INDEX fetchGames requestUrl: ", requestUrl);
+        setIsLoading(true);
         axios
             .get(`${requestUrl}`)
             .then(response => {
-                console.info(response.data);
-                // console.info(response.data.message);
-                // console.info(response.data.data);
+                if (isDebug) console.info("🟨 GAMES INDEX fetchGames response");
+                if (isDebug) console.debug("🟨 GAMES INDEX fetchGames response response.data: ", response.data);
+                if (isDebug) console.debug("🟨 GAMES INDEX fetchGames response formData: ", formData);
                 const TMPgames = response.data.data.map((game) => {
                     return {
                         id: game.id,
                         image: game.logo,
                         name: game.name,
                         description: game.description,
+                        price: game.price,
                     }
                 });
-                console.info('TMPgames', TMPgames);                
-                // setGames(response.data.data);
+                if (isDebug) console.debug('🟨 GAMES INDEX fetchGames response TMPgames', TMPgames);
                 setGames(TMPgames);
             })
             .catch(error => {
-                console.error(`new error on request ${requestUrl}`);
-                console.error(error);
-                // console.error(error.message);
-                // console.error(error.response);
-                // console.error(error.response.data);
+                if (isDebug) console.error("❌ GAMES INDEX error", error);
                 setGames([]);
             })
             .finally(() => {
                 setIsLoading(false);
             });
     }
+
+
 
 
 
