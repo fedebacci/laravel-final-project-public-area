@@ -24,6 +24,11 @@ export default function ResourceCard ({ resource, resourceType }) {
         <Link to={pageLink} className="card h-100 text-decoration-none">
 
             {
+                resource.logo
+                &&
+                <img src={import.meta.env.VITE_BACKOFFICE_URL + '/storage/' + resource.logo} alt={resource.name} className="card-img-top" />
+            }
+            {
                 resource.image
                 &&
                 <img src={import.meta.env.VITE_BACKOFFICE_URL + '/storage/' + resource.image} alt={resource.name} className="card-img-top" />

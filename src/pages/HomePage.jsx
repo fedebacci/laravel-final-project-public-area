@@ -195,7 +195,7 @@ export default function HomePage () {
                                 {
                                     games.map(game => {
                                         return (
-                                            <div className="col-12 col-md-4 col-lg-3" key={game.id}>
+                                            <div className="col-12 col-md-4 col-lg-3 col-xl-2" key={game.id}>
                                                 <ResourceCard
                                                     resource={game}
                                                     resourceType={'games'}
@@ -241,7 +241,7 @@ export default function HomePage () {
                                 {
                                     cards.map(card => {
                                         return (
-                                            <div className="col-12 col-md-4 col-lg-3" key={card.id}>
+                                            <div className="col-12 col-md-4 col-lg-3 col-xl-2" key={card.id}>
                                                 <ResourceCard
                                                     resource={card}
                                                     resourceType={'cards'}
@@ -282,7 +282,7 @@ export default function HomePage () {
                                 {
                                     decks.map(deck => {
                                         return (
-                                            <div className="col-12 col-md-4 col-lg-3" key={deck.id}>
+                                            <div className="col-12 col-md-4 col-lg-3 col-xl-2" key={deck.id}>
                                                 <ResourceCard
                                                     resource={deck}
                                                     resourceType={'decks'}

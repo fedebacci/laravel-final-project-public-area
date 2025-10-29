@@ -237,7 +237,7 @@ export default function DecksIndexPage () {
                                 {
                                     decks.map(deck => {
                                         return (
-                                            <div className="col-12 col-md-4 col-lg-3" key={deck.id}>
+                                            <div className="col-12 col-md-4 col-lg-3 col-xl-2" key={deck.id}>
                                                 <ResourceCard
                                                     resource={deck}
                                                     resourceType={'decks'}

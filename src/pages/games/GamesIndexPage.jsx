@@ -110,8 +110,7 @@ export default function GamesIndexPage () {
                         id: game.id,
                         image: game.logo,
                         name: game.name,
-                        description: game.description,
-                        price: game.price,
+                        description: game.description
                     }
                 });
                 if (isDebug) console.debug('🟨 GAMES INDEX fetchGames response TMPgames', TMPgames);
@@ -201,7 +200,7 @@ export default function GamesIndexPage () {
                                 {
                                     games.map(game => {
                                         return (
-                                            <div className="col-12 col-md-4 col-lg-3" key={game.id}>
+                                            <div className="col-12 col-md-4 col-lg-3 col-xl-2" key={game.id}>
                                                 <ResourceCard
                                                     resource={game}
                                                     resourceType={'games'}

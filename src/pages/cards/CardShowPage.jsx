@@ -4,6 +4,7 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 import { useNavigate } from "react-router-dom";
+import ResourceCard from "../../components/resources/ResourceCard";
 
 export default function CardShowPage () {
     const { id } = useParams();
@@ -72,21 +73,88 @@ export default function CardShowPage () {
                         </p>
                     :
                         <>
-                            <h2 className='text-center'>
-                                {card.name}
-                            </h2>
+
+                            <div className="row my-5">
+                                {
+                                    card.image &&
+                                    <div className="col-12 col-md-4">
+                                        <div className="resource-img text-center">
+                                            <img src={import.meta.env.VITE_BACKOFFICE_URL + '/storage/' + card.image} alt={card.name} className="resource-img-full img-fluid d-block" />
+                                        </div>
+                                    </div>
+                                }
+
+                                <div className="col-12 col-md-8">
+                                    <h2 className='text-center'>
+                                        {card.name}
+                                    </h2>
+                                    {
+                                        card.description != null ?
+                                            <div className="description mb-3">
+                                                <pre>
+                                                    {card.description}
+                                                </pre>
+                                            </div>
+                                        :
+                                            <p className="mb-3">
+                                                No description
+                                            </p>
+                                    }
+                                    {
+                                        card.price != null ?
+                                            <div className="price mb-3">
+                                                {card.price}
+                                            </div>
+                                        :
+                                            <p className="mb-3">
+                                                No price
+                                            </p>
+                                    }                                    
+                                </div>                                   
+                            </div>
+
+
+
+
+
                             {
-                                card.description != null ?
-                                    <div className="description mb-3">
-                                        <pre>
-                                            {card.description}
-                                        </pre>
-                                    </div>                
-                                :
-                                    <p className="mb-3">
-                                        No description
-                                    </p>
+                                card.game &&
+                                <div className="my-5">
+                                    <h4>
+                                        {card.name} - game
+                                    </h4>
+                                    <div className="row g-3">
+                                        <div className="col-12 col-md-4 col-lg-3 col-xl-2" key={card.game.id}>
+                                            <ResourceCard
+                                                resource={card.game}
+                                                resourceType={'games'}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>                                  
                             }
+                            {
+                                card.decks &&
+                                <div className="my-5">
+                                    <h4>
+                                        {card.name} - decks
+                                    </h4>
+                                    <div className="row g-3">
+                                        {
+                                            card.decks.map(deck => {
+                                                return (
+                                                    <div className="col-12 col-md-4 col-lg-3 col-xl-2" key={deck.id}>
+                                                        <ResourceCard
+                                                            resource={deck}
+                                                            resourceType={'decks'}
+                                                        />
+                                                    </div>
+                                                );
+                                            })
+                                        }
+                                    </div>
+                                </div>                                  
+                            }                            
                         </>
                 }
 

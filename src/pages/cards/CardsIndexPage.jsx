@@ -233,7 +233,7 @@ export default function CardsIndexPage () {
                                 {
                                     cards.map(card => {
                                         return (
-                                            <div className="col-12 col-md-4 col-lg-3" key={card.id}>
+                                            <div className="col-12 col-md-4 col-lg-3 col-xl-2" key={card.id}>
                                                 <ResourceCard
                                                     resource={card}
                                                     resourceType={'cards'}
