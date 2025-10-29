@@ -78,7 +78,7 @@ export default function CardsIndexPage () {
             fetchCards(requestUrl, formData);
         } else {
             console.error("⚠️ handleSubmit formData DOES NOT EXIST");
-            fetchCards(requestUrl, {...formInitialData});
+            fetchCards(requestUrl, null);
         }
 
 
@@ -92,7 +92,7 @@ export default function CardsIndexPage () {
 
 
 
-    function fetchCards (requestUrl, filters = {...formInitialData}) {
+    function fetchCards (requestUrl, filters = null) {
         console.info("⬜ fetchCards");
         console.debug("⬜ fetchCards formData: ", formData);
         console.debug("⬜ fetchCards requestUrl: ", requestUrl);
@@ -101,34 +101,18 @@ export default function CardsIndexPage () {
 
 
 
-        if (filters.name == "") delete filters.name;
-        if (filters.description == "") delete filters.description;
-        if (filters.min_price == "") delete filters.min_price;
-        if (filters.max_price == "") delete filters.max_price; 
+        if (filters?.name == "") delete filters.name;
+        if (filters?.description == "") delete filters.description;
+        if (filters?.min_price == "") delete filters.min_price;
+        if (filters?.max_price == "") delete filters.max_price;         
+        if (filters != null && Object.keys(filters).length > 0) {
+            console.debug("⬜ fetchCards filters != null && Object.keys(filters).length > 0");
 
-
-
-        console.warn("⬜ fetchCards Object.keys(filters)", Object.keys(filters));
-        console.warn("⬜ fetchCards Object.keys(filters).length", Object.keys(filters).length);
-        console.warn("⬜ fetchCards Object.keys(filters).length > 0", Object.keys(filters).length > 0);
-        if (Object.keys(filters).length > 0) {
-            console.warn("⬜ fetchCards Object.keys(filters).length > 0");
-            console.warn("⬜ fetchCards filters: ", filters);
-            console.warn("⬜ fetchCards formInitialData: ", formInitialData);
-            
             const requestFilters = new URLSearchParams(filters);
-            requestUrl = requestUrl + '?' + requestFilters;
-            console.warn("⬜ fetchCards requestUrl: ", requestUrl);
+            requestUrl = requestUrl + '?' + requestFilters;          
         } else {
-            console.warn("⬜ fetchCards Object.keys(filters).length <= 0");
-            console.warn("⬜ fetchCards filters: ", filters);
-            console.warn("⬜ fetchCards formInitialData: ", formInitialData);
-
-            console.warn("⬜ fetchCards requestUrl: ", requestUrl);
+            console.debug("⬜ fetchCards filters == null || Object.keys(filters) <= 0");
         }
-
-
-
 
 
 
