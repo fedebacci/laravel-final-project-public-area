@@ -3,28 +3,41 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import pages from "../../assets/js/pages";
+// - Filters sharing
+// import { useNavigate, useLocation } from "react-router-dom";
 import ResourceCard from "../../components/resources/ResourceCard";
 
 
 const formInitialData = {
     name: "",
     description: "",
-    // max_price: null,
-    // min_price: null,
+    min_price: "",
+    max_price: "",
 };
 
 
 export default function CardsIndexPage () {
+    console.info(`⚙️ LOADING CARDS INDEX .......... .......... .......... .......... .......... .......... ..........`);
+    
     let requestUrl = apiUrl + 'cards';
-
-    console.debug(`⚙️ LOADING CARDS INDEX .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... .......... ..........`);
-
+    console.debug(`⚙️ CARDS INDEX requestUrl`, requestUrl);
+    
     const [cards, setCards] = useState([]);
+    console.debug(`⚙️ CARDS INDEX cards`, cards);
     const { setIsLoading } = useLoader();
-    const location = useLocation();
+    
+    // - Filters sharing
+    // const location = useLocation();
+    // console.debug(`⚙️ CARDS INDEX location`, location);
+
+
+
+
+
     useEffect(() => {
+        console.info(`🔂 useEffect`);
+        console.debug(`🔂 useEffect requestUrl`, requestUrl);
+        console.debug(`🔂 useEffect formData`, formData);
         fetchCards(requestUrl);
     }, []);
     
@@ -36,7 +49,10 @@ export default function CardsIndexPage () {
 
 
     const [ formData, setFormData ] =  useState({ ...formInitialData });
-    const navigate = useNavigate();
+    console.debug(`⚙️ CARDS INDEX formData`, formData);
+
+    // - Filters sharing
+    // const navigate = useNavigate();
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value});
     };
@@ -44,16 +60,31 @@ export default function CardsIndexPage () {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (formData.name == "") delete formData.name;
-        if (formData.description == "") delete formData.description;
-        const filters = new URLSearchParams(formData);
+        console.clear();
+        console.info("⚠️ handleSubmit");
+        console.debug("⚠️ handleSubmit formData: ", formData);        
+        
+     
 
-        if (filters.size != 0) {
+        if (formData) {
+            console.warn("⚠️ handleSubmit formData EXISTS");
+            console.debug("⚠️ handleSubmit formData: ", formData); 
+
+            // - Filters sharing
+            // ! If enabled enables the sharing of results
+            // const filters = new URLSearchParams(formData);
+            // console.debug("⚠️ handleSubmit filters: ", filters); 
+            
             fetchCards(requestUrl, formData);
         } else {
-            fetchCards(requestUrl);
+            console.error("⚠️ handleSubmit formData DOES NOT EXIST");
+            fetchCards(requestUrl, {...formInitialData});
         }
-        navigate(pages.CARDS() + filters.size != 0 ? '?' + filters: '');
+
+
+        // - Filters sharing
+        // ! If enabled enables the sharing of results
+        // navigate(pages.CARDS() + filters.size != 0 ? '?' + filters: '');
     };
 
 
@@ -61,47 +92,88 @@ export default function CardsIndexPage () {
 
 
 
-    function fetchCards (requestUrl, filters = null) {
+    function fetchCards (requestUrl, filters = {...formInitialData}) {
+        console.info("⬜ fetchCards");
+        console.debug("⬜ fetchCards formData: ", formData);
+        console.debug("⬜ fetchCards requestUrl: ", requestUrl);
+        console.debug("⬜ fetchCards filters: ", filters);
 
 
-        const urlFilters = new URLSearchParams(location.search);
-        if (filters) {
-            if (filters.name == "") delete filters.name;
-            if (filters.description == "") delete filters.description;
 
-            const filtersToAddToRequestFromFiltersObject = new URLSearchParams(filters);
-            requestUrl = requestUrl + '?' + filtersToAddToRequestFromFiltersObject;
-        } else if (formData.name == undefined && formData.description == undefined) {
-            setFormData({...formInitialData})
-        } else if (!filters && urlFilters.size > 0) {
-            requestUrl = requestUrl + '?' + urlFilters;
-        }        
 
+        if (filters.name == "") delete filters.name;
+        if (filters.description == "") delete filters.description;
+        if (filters.min_price == "") delete filters.min_price;
+        if (filters.max_price == "") delete filters.max_price; 
+
+
+
+        console.warn("⬜ fetchCards Object.keys(filters)", Object.keys(filters));
+        console.warn("⬜ fetchCards Object.keys(filters).length", Object.keys(filters).length);
+        console.warn("⬜ fetchCards Object.keys(filters).length > 0", Object.keys(filters).length > 0);
+        if (Object.keys(filters).length > 0) {
+            console.warn("⬜ fetchCards Object.keys(filters).length > 0");
+            console.warn("⬜ fetchCards filters: ", filters);
+            console.warn("⬜ fetchCards formInitialData: ", formInitialData);
+            
+            const requestFilters = new URLSearchParams(filters);
+            requestUrl = requestUrl + '?' + requestFilters;
+            console.warn("⬜ fetchCards requestUrl: ", requestUrl);
+        } else {
+            console.warn("⬜ fetchCards Object.keys(filters).length <= 0");
+            console.warn("⬜ fetchCards filters: ", filters);
+            console.warn("⬜ fetchCards formInitialData: ", formInitialData);
+
+            console.warn("⬜ fetchCards requestUrl: ", requestUrl);
+        }
+
+
+
+
+
+
+
+        // - Filters sharing
+        // ! If enabled enables the sharing of results
+        // const urlFilters = new URLSearchParams(location.search);
+        // console.debug("⬜ fetchCards urlFilters: ", urlFilters);
+
+        // - Filters sharing
+        // ! If enabled enables the sharing of results
+        // if (filters) {
+        //     if (filters.name == "") delete filters.name;
+        //     if (filters.description == "") delete filters.description;
+
+        //     const filtersToAddToRequestFromFiltersObject = new URLSearchParams(filters);
+        //     requestUrl = requestUrl + '?' + filtersToAddToRequestFromFiltersObject;
+        // } else if (formData.name == undefined && formData.description == undefined) {
+        //     setFormData({...formInitialData})
+        // } else if (!filters && urlFilters.size > 0) {
+        //     requestUrl = requestUrl + '?' + urlFilters;
+        // }
+
+        console.debug("⬜⬜ fetchCards requestUrl: ", requestUrl);
         setIsLoading(true);
         axios
             .get(`${requestUrl}`)
             .then(response => {
-                console.info(response.data);
-                // console.info(response.data.message);
-                // console.info(response.data.data);
+                console.info("🟨 fetchCards response");
+                console.debug("🟨 fetchCards response response.data: ", response.data);
+                console.debug("🟨 fetchCards response formData: ", formData);
                 const TMPcards = response.data.data.map((card) => {
                     return {
                         id: card.id,
                         image: card.image,
                         name: card.name,
                         description: card.description,
+                        price: card.price,
                     }
                 });
-                console.info('TMPcards', TMPcards);
-                // setCards(response.data.data);
+                console.debug('🟨 fetchCards response TMPcards', TMPcards);
                 setCards(TMPcards);
             })
             .catch(error => {
-                console.error(`new error on request ${requestUrl}`);
-                console.error(error);
-                // console.error(error.message);
-                // console.error(error.response);
-                // console.error(error.response.data);
+                console.error("❌ error", error);
                 setCards([]);
             })
             .finally(() => {
@@ -157,6 +229,37 @@ export default function CardsIndexPage () {
                         </div>
 
 
+                        <div className="col-12 col-md-6">
+                            <label htmlFor=" " className="form-label">
+                                Filter by min_price
+                            </label>
+                            <input 
+                                value={formData.min_price}
+                                onChange={handleInputChange}
+                                name="min_price"
+
+                                type="number" 
+                                className="form-control" 
+                                id="min_price" 
+                            />
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <label htmlFor=" " className="form-label">
+                                Filter by max_price
+                            </label>
+                            <input 
+                                value={formData.max_price}
+                                onChange={handleInputChange}
+                                name="max_price"
+
+                                type="number" 
+                                className="form-control" 
+                                id="max_price" 
+                            />
+                        </div>
+
+
+
                         <button 
                             onClick={handleSubmit}
 
@@ -186,33 +289,7 @@ export default function CardsIndexPage () {
                                                     resource={card}
                                                     resourceType={'cards'}
                                                 />
-                                            </div>                                             
-                                            // <div className="col-12 col-md-4 col-lg-3" key={card.id}>
-                                            //     <div className="card h-100">
-                                            //         <div className="card-body">
-                                            //             <h3>
-                                            //                 {card.name}
-                                            //             </h3>
-                                            //             {/* {card.name} */}
-                                            //             <p>
-                                            //                 {
-                                            //                     card.description != null && card.description.length > 50 ? 
-                                            //                         card.description.slice(0,50) + '...' 
-                                            //                     : 
-                                            //                         card.description != null ?
-                                            //                             card.description
-                                            //                         :
-                                            //                             'No description'
-                                            //                 }
-                                            //             </p>
-                                            //             <div className="mb-3">
-                                            //                 <Link to={pages.SHOWCARD(card.id)} className="text-decoration-none">
-                                            //                     Show
-                                            //                 </Link>
-                                            //             </div>
-                                            //         </div>
-                                            //     </div>
-                                            // </div>
+                                            </div>
                                         );
                                     })
                                 }

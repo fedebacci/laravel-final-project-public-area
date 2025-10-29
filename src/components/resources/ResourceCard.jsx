@@ -42,6 +42,14 @@ export default function ResourceCard ({ resource, resourceType }) {
                         'No description available'
                     }
                 </p>
+
+                {
+                    resource.price &&
+                    <p className="m-0">
+                        € {resource.price}
+                    </p>
+                }
+
             </div>
         </Link>       
     );
