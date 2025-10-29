@@ -3,8 +3,6 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { useLoader } from "../../contexts/LoaderContext";
 
-// - Filters sharing
-// import { useNavigate, useLocation } from "react-router-dom";
 import ResourceCard from "../../components/resources/ResourceCard";
 
 
@@ -25,10 +23,7 @@ export default function CardsIndexPage () {
     const [cards, setCards] = useState([]);
     console.debug(`⚙️ CARDS INDEX cards`, cards);
     const { setIsLoading } = useLoader();
-    
-    // - Filters sharing
-    // const location = useLocation();
-    // console.debug(`⚙️ CARDS INDEX location`, location);
+
 
 
 
@@ -51,8 +46,6 @@ export default function CardsIndexPage () {
     const [ formData, setFormData ] =  useState({ ...formInitialData });
     console.debug(`⚙️ CARDS INDEX formData`, formData);
 
-    // - Filters sharing
-    // const navigate = useNavigate();
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value});
     };
@@ -70,21 +63,11 @@ export default function CardsIndexPage () {
             console.warn("⚠️ handleSubmit formData EXISTS");
             console.debug("⚠️ handleSubmit formData: ", formData); 
 
-            // - Filters sharing
-            // ! If enabled enables the sharing of results
-            // const filters = new URLSearchParams(formData);
-            // console.debug("⚠️ handleSubmit filters: ", filters); 
-            
             fetchCards(requestUrl, formData);
         } else {
             console.error("⚠️ handleSubmit formData DOES NOT EXIST");
             fetchCards(requestUrl, null);
         }
-
-
-        // - Filters sharing
-        // ! If enabled enables the sharing of results
-        // navigate(pages.CARDS() + filters.size != 0 ? '?' + filters: '');
     };
 
 
@@ -116,25 +99,6 @@ export default function CardsIndexPage () {
 
 
 
-
-        // - Filters sharing
-        // ! If enabled enables the sharing of results
-        // const urlFilters = new URLSearchParams(location.search);
-        // console.debug("⬜ fetchCards urlFilters: ", urlFilters);
-
-        // - Filters sharing
-        // ! If enabled enables the sharing of results
-        // if (filters) {
-        //     if (filters.name == "") delete filters.name;
-        //     if (filters.description == "") delete filters.description;
-
-        //     const filtersToAddToRequestFromFiltersObject = new URLSearchParams(filters);
-        //     requestUrl = requestUrl + '?' + filtersToAddToRequestFromFiltersObject;
-        // } else if (formData.name == undefined && formData.description == undefined) {
-        //     setFormData({...formInitialData})
-        // } else if (!filters && urlFilters.size > 0) {
-        //     requestUrl = requestUrl + '?' + urlFilters;
-        // }
 
         console.debug("⬜⬜ fetchCards requestUrl: ", requestUrl);
         setIsLoading(true);
